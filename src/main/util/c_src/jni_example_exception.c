@@ -1,3 +1,5 @@
+#include <jni.h>
+#include <jni_example_exception.h>
 
 #define JNI_EXAMPLE_LANG_EXCEPTION_CLASS "java/lang/Exception"
 #define JNI_EXAMPLE_INIT_THROWABLE_WITH_CODE(class) (*env)->GetMethodID(env, class, "<init>", "(Ljava/lang/String;I)V")
@@ -6,7 +8,6 @@ jint throwNewException(JNIEnv *env, const char *class, const char *message, int 
 {
    jint err;
    jclass exClass;
-   jfieldID field;
    jmethodID methodId;
    jobject jErrObj;
    jstring errMsg;

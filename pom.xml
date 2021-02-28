@@ -43,6 +43,7 @@
                 <configuration>
                     <forkMode>always</forkMode>
                     <workingDirectory>target</workingDirectory>
+                    <argLine>-Djava.library.path=${basedir}/src/main/util</argLine>
                 </configuration>
             </plugin>
             <plugin>

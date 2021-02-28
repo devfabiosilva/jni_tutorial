@@ -25,7 +25,7 @@ inline const char *welcome()
    return WELCOME_MSG;
 }
 
-inline int hello_guest(char **ret_msg, const char *guest)
+inline int hello_guest_dynamic(char **ret_msg, const char *guest)
 {
    return asprintf(ret_msg, HELLO_GUEST_MSG, guest);
 }
