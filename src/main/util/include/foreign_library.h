@@ -12,4 +12,3 @@ double sub_two_numbers(double, double);
 double mult_two_numbers(double, double);
 double *div_two_numbers(double *, double);
 unsigned long int random_longint();
-

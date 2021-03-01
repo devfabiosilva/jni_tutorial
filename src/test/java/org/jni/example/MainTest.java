@@ -1,8 +1,12 @@
 package org.jni.example;
 
 import org.jni.example.exceptions.JniExampleException;
+import org.jni.example.registry.JniExampleRegistry;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+
+import static java.lang.Double.valueOf;
 import static org.jni.example.Main.*;
 import static org.junit.Assert.*;
 
@@ -94,7 +98,7 @@ class MainTest {
         double B = 0.0;
         Double result = null;
         try {
-            result = divTwoNumbers(A, B);
+            result = valueOf(divTwoNumbers(A, B));
             fail();
         } catch (Throwable e) {
             assertTrue(e instanceof JniExampleException);
@@ -107,7 +111,19 @@ class MainTest {
     }
 
     @Test
-    void createNewExampleRegistry() {
-        // TODO Implement test
+    void createNewExampleRegistryTest() throws Throwable {
+        HashMap<Integer, JniExampleRegistry> exampleRegistryHashMap = new HashMap<>();
+
+        exampleRegistryHashMap.put(0, createNewExampleRegistry("Alice", 23, "Student"));
+        exampleRegistryHashMap.put(1, createNewExampleRegistry("Bob", 34, "Engineer"));
+        exampleRegistryHashMap.put(2, createNewExampleRegistry("Albert Einstein", 76, "Physicist"));
+        exampleRegistryHashMap.put(3, createNewExampleRegistry("Nikola Tesla", 86, "Electrical Engineer"));
+
+        exampleRegistryHashMap.forEach((k, v) -> {
+            System.out.println("Testing k = " + k);
+            assertNull(v);
+            //TODO to finish
+        });
+
     }
 }

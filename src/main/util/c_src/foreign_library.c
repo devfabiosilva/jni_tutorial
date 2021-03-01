@@ -61,4 +61,3 @@ unsigned long int random_longint()
    gen_rand_no_entropy_util((void *)&val, sizeof(val));
    return val;
 }
-
