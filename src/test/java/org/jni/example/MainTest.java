@@ -126,4 +126,10 @@ class MainTest {
         });
 
     }
+
+    @Test
+    void playground() {
+        Long val = Long.valueOf(32);
+        System.out.println(val);
+    }
 }

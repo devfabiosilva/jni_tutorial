@@ -124,7 +124,7 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(JNIEnv *env, j
 {
    double result=(double)A;
 
-   if (div_two_numbers(&result, B))
+   if (div_two_numbers(&result, (double)B))
       return result;
 
    JNI_EXAMPLE_UTIL_EXCEPTION("divTwoNumbers: Can not divide by ZERO!", 300);
@@ -132,14 +132,97 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(JNIEnv *env, j
    return 0.0;
 }
 
+int jni_example_create_new_java_long(JNIEnv *env, jobject *newJavaLongObj, signed long long int value, const char *function_name)
+{
+   int err;
+//TODO to be implemented
+   return err;
+}
+
+int jni_example_create_new_object_util(
+   JNIEnv *env,
+   jobject *thisNewObject,
+   jclass *jniClass;
+   jmethodID *jniMethodId;
+   const char *class_name,
+   const char *signature,
+   const char *function_name
+)
+{
+   int err;
+
+   *thisNewObject=NULL;
+   *jniMethodId=NULL;
+
+   if (!(*jniClass=(*env)->FindClass(env, class))) {
+      sprintf(str_message, "jni_example_create_new_object @ %s. Could not find class \"%s\". Error = %d", function_name, class_name, err=400);
+      return err;
+   }
+
+   if (!(*jniMethodId=(*env)->GetMethodID(env, class, "<init>", signature))) {
+      *jniClass=NULL;
+      sprintf(str_message, "jni_example_create_new_object @ %s. Could not get method at \"%s\" class. Error = %d", function_name, class_name, err=401);
+      return err;
+   }
+
+   err=0;
+   if (!(thisNewObject=(*env)->NewObject(env, jniClass, jniMethodId))) {
+      *jniClass=NULL;
+      *jniMethodId=NULL;
+      sprintf(str_message, "jni_example_create_new_object @ %s. Could not create new object with \"%s\" class. Error = %d", function_name, class_name, err=402);
+   }
+
+   return err;
+}
+
+int jni_example_set_value(
+   JNIEnv *env,
+   jclass destClass,
+   jobject destObject,
+   jobject sourceObject,
+   const char *fieldName,
+   const char *signature,
+   const char *function_name
+)
+{
+   int err;
+   jfieldID field;
+
+   if (!(field=GetFieldID(env, destClass, fieldName, signature))) {
+      sprintf(str_message, "jni_example_set_value @ %s. Can not get field in referenced class. JNI Example error = %d", function_name, err=500);
+      return err;
+   }
+
+   if (()) {
+// TODO. To be implemented
+
+   }
+
+   return 0;
+}
+
 /*
  * Class:     org_jni_example_Main
  * Method:    createNewExampleRegistry
  * Signature: (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;)Lorg/jni/example/registry/JniExampleRegistry;
  */
+#define MY_JNI_EXAMPLE_RESGISTRY_CLASS "org/jni/example/registry/JniExampleRegistry"
+#define JNI_JAVA_LANG_LONG_CLASS "java/lang/Long"
 JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(JNIEnv *env, jclass thisObj, jstring name, jobject age, jstring occupation)
 {
-   //TODO to be implemented
-   return NULL;
+   int err;
+   jobject result;
+   jclass jniClass;
+   jmethodID jniMethodId;
+
+   if ((err=jni_example_create_new_object_util(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, "createNewExampleRegistry"))) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT1;
+   }
+
+
+Java_org_jni_example_Main_createNewExampleRegistry_EXIT1:
+
+   return result;
 }
 
