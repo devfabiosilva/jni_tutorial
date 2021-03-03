@@ -114,22 +114,25 @@ class MainTest {
     void createNewExampleRegistryTest() throws Throwable {
         HashMap<Integer, JniExampleRegistry> exampleRegistryHashMap = new HashMap<>();
 
-        exampleRegistryHashMap.put(0, createNewExampleRegistry("Alice", 23, "Student"));
+        exampleRegistryHashMap.put(0, createNewExampleRegistry("Alice", 20, "Student"));
         exampleRegistryHashMap.put(1, createNewExampleRegistry("Bob", 34, "Engineer"));
         exampleRegistryHashMap.put(2, createNewExampleRegistry("Albert Einstein", 76, "Physicist"));
         exampleRegistryHashMap.put(3, createNewExampleRegistry("Nikola Tesla", 86, "Electrical Engineer"));
 
         exampleRegistryHashMap.forEach((k, v) -> {
             System.out.println("Testing k = " + k);
-            assertNull(v);
-            //TODO to finish
+            assertNotNull(v);
+            assertNotNull(v.getId());
+            assertNotNull(v.getName());
+            assertNotNull(v.getAge());
+            assertNotNull(v.getOccupation());
+            System.out.println("==============================");
+            System.out.println("Generated long random ID = " + v.getId());
+            System.out.println("Name = " + v.getName());
+            System.out.println("Age = " + v.getAge());
+            System.out.println("Occupation " + v.getOccupation());
+            System.out.println("-------------------------------\n");
         });
 
-    }
-
-    @Test
-    void playground() {
-        Long val = Long.valueOf(32);
-        System.out.println(val);
     }
 }

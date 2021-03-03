@@ -3,7 +3,7 @@
 #include <jni_example_exception.h>
 #include <foreign_library.h>
 
-#define STR_MESSAGE_MAX_SZ (size_t)768
+#define STR_MESSAGE_MAX_SZ (size_t)1024
 static char str_message[STR_MESSAGE_MAX_SZ];
 
 #define C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION "Error when parsing C string to Java UTF-8"
@@ -132,18 +132,45 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(JNIEnv *env, j
    return 0.0;
 }
 
+#define JNI_EXAMPLE_INIT "<init>"
+#define JNI_EXAMPLE_JAVA_LANG_LONG_CLASS "java/lang/Long"
+#define JNI_EXAMPLE_JAVA_LANG_LONG_CLASS_SIGNATURE "L"JNI_EXAMPLE_JAVA_LANG_LONG_CLASS";"
+#define JNI_EXAMPLE_JAVA_LANG_STRING "java/lang/String"
+#define JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE "L"JNI_EXAMPLE_JAVA_LANG_STRING";"
+#define JNI_EXAMPLE_JAVA_LANG_INTEGER "java/lang/Integer"
+#define JNI_EXAMPLE_JAVA_LANG_INTEGER_SIGNATURE "L"JNI_EXAMPLE_JAVA_LANG_INTEGER";"
+#define JNI_EXAMPLE_INIT_SIGNATURE "(J)V"
 int jni_example_create_new_java_long(JNIEnv *env, jobject *newJavaLongObj, signed long long int value, const char *function_name)
 {
    int err;
-//TODO to be implemented
+   jmethodID methodId;
+   jclass javaLongClass;
+
+   *newJavaLongObj=NULL;
+   if (!(javaLongClass=(*env)->FindClass(env, JNI_EXAMPLE_JAVA_LANG_LONG_CLASS))) {
+      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not find class \""JNI_EXAMPLE_JAVA_LANG_LONG_CLASS"\". Error = %d",
+         function_name, err=500);
+      return err;
+   }
+
+   if (!(methodId=(*env)->GetMethodID(env, javaLongClass, JNI_EXAMPLE_INIT, JNI_EXAMPLE_INIT_SIGNATURE))) {
+      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not init method with signature \""JNI_EXAMPLE_INIT_SIGNATURE"\". Error = %d",
+         function_name, err=501);
+      return err;
+   }
+
+   err=0;
+   if (!(*newJavaLongObj=(*env)->NewObject(env, javaLongClass, methodId, (jlong)value)))
+      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not create new Long object. Error = %d", function_name, err=502);
+
    return err;
 }
 
 int jni_example_create_new_object_util(
    JNIEnv *env,
    jobject *thisNewObject,
-   jclass *jniClass;
-   jmethodID *jniMethodId;
+   jclass *jniClass,
+   jmethodID *jniMethodId,
    const char *class_name,
    const char *signature,
    const char *function_name
@@ -154,19 +181,19 @@ int jni_example_create_new_object_util(
    *thisNewObject=NULL;
    *jniMethodId=NULL;
 
-   if (!(*jniClass=(*env)->FindClass(env, class))) {
+   if (!(*jniClass=(*env)->FindClass(env, class_name))) {
       sprintf(str_message, "jni_example_create_new_object @ %s. Could not find class \"%s\". Error = %d", function_name, class_name, err=400);
       return err;
    }
 
-   if (!(*jniMethodId=(*env)->GetMethodID(env, class, "<init>", signature))) {
+   if (!(*jniMethodId=(*env)->GetMethodID(env, *jniClass, JNI_EXAMPLE_INIT, signature))) {
       *jniClass=NULL;
       sprintf(str_message, "jni_example_create_new_object @ %s. Could not get method at \"%s\" class. Error = %d", function_name, class_name, err=401);
       return err;
    }
 
    err=0;
-   if (!(thisNewObject=(*env)->NewObject(env, jniClass, jniMethodId))) {
+   if (!(*thisNewObject=(*env)->NewObject(env, *jniClass, *jniMethodId))) {
       *jniClass=NULL;
       *jniMethodId=NULL;
       sprintf(str_message, "jni_example_create_new_object @ %s. Could not create new object with \"%s\" class. Error = %d", function_name, class_name, err=402);
@@ -188,17 +215,19 @@ int jni_example_set_value(
    int err;
    jfieldID field;
 
-   if (!(field=GetFieldID(env, destClass, fieldName, signature))) {
-      sprintf(str_message, "jni_example_set_value @ %s. Can not get field in referenced class. JNI Example error = %d", function_name, err=500);
+   if (!(field=(*env)->GetFieldID(env, destClass, fieldName, signature))) {
+      sprintf(str_message, "jni_example_set_value @ %s. Can not get field name \"%s\" in referenced signature \"%s\". JNI Example error = %d", function_name,
+         fieldName, signature, err=600);
       return err;
    }
 
-   if (()) {
-// TODO. To be implemented
+   (*env)->SetObjectField(env, destObject, field, sourceObject);
 
-   }
+   err=0;
+   if ((*env)->ExceptionCheck(env))
+      sprintf(str_message, "jni_example_set_value @ %s. Can not set attribute to \"%s\". Error = %d", function_name, fieldName, err=601);
 
-   return 0;
+   return err;
 }
 
 /*
@@ -207,22 +236,82 @@ int jni_example_set_value(
  * Signature: (Ljava/lang/String;Ljava/lang/Integer;Ljava/lang/String;)Lorg/jni/example/registry/JniExampleRegistry;
  */
 #define MY_JNI_EXAMPLE_RESGISTRY_CLASS "org/jni/example/registry/JniExampleRegistry"
-#define JNI_JAVA_LANG_LONG_CLASS "java/lang/Long"
+#define MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE "()V"
+#define CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME "createNewExampleRegistry"
 JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(JNIEnv *env, jclass thisObj, jstring name, jobject age, jstring occupation)
 {
    int err;
-   jobject result;
+   jobject result, javaLongObject;
    jclass jniClass;
    jmethodID jniMethodId;
 
-   if ((err=jni_example_create_new_object_util(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, "createNewExampleRegistry"))) {
+   if (!name) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be null", 700);
+      return NULL;
+   }
+
+   if ((*env)->GetStringUTFLength(env, name)==0) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be an empty string", 701);
+      return NULL;
+   }
+
+   if (!age) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"age\" field can not be null", 702);
+      return NULL;
+   }
+
+   if (!occupation) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be null", 703);
+      return NULL;
+   }
+
+   if ((*env)->GetStringUTFLength(env, occupation)==0) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be an empty string", 704);
+      return NULL;
+   }
+
+   if ((err=jni_example_create_new_object_util(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE,
+      CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      return NULL;
+   }
+
+   if ((err=jni_example_create_new_java_long(env, &javaLongObject, (signed long long int)random_longint(), CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT1;
    }
 
+   if ((err=jni_example_set_value(env, jniClass, result, javaLongObject, "id", JNI_EXAMPLE_JAVA_LANG_LONG_CLASS_SIGNATURE,
+         CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT2;
+   }
 
+   if ((err=jni_example_set_value(env, jniClass, result, name, "name", JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE,
+         CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT2;
+   }
+
+   if ((err=jni_example_set_value(env, jniClass, result, age, "age", JNI_EXAMPLE_JAVA_LANG_INTEGER_SIGNATURE,
+         CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT2;
+   }
+
+   if ((err=jni_example_set_value(env, jniClass, result, occupation, "occupation", JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE,
+         CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+
+Java_org_jni_example_Main_createNewExampleRegistry_EXIT2:
+   (*env)->DeleteLocalRef(env, javaLongObject);
+
+   if (err) {
 Java_org_jni_example_Main_createNewExampleRegistry_EXIT1:
+      (*env)->DeleteLocalRef(env, result);
+      result=NULL;
+   }
 
    return result;
+
 }
 

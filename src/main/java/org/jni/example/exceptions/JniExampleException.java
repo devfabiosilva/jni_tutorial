@@ -1,5 +1,5 @@
 package org.jni.example.exceptions;
-
+// Don't modify this class. This is used in JNI
 public class JniExampleException extends Throwable {
     private final int error;
 
