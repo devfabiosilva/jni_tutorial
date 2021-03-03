@@ -16,7 +16,7 @@ CURDIR=$(PWD)
 JAVAINCLUDE=/usr/lib/jvm/java-11-openjdk-amd64/include
 JAVAINCLUDE_LINUX=/usr/lib/jvm/java-11-openjdk-amd64/include/linux
 MAINFILE=jni_example
-JNI_EXAMPLE_EXCEPTION=jni_example_exception
+JNI_EXAMPLE_UTILS=jni_example_utils
 FOREIGN_LIBRARY=foreign_library
 C_SRC=$(PWD)/c_src
 JNI_EXAMPLE_SUFFIX=-I$(INCLUDEDIR) -I$(JAVAINCLUDE) -I$(JAVAINCLUDE_LINUX)
@@ -27,17 +27,17 @@ $(FOREIGN_LIBRARY).o: $(C_SRC)/$(FOREIGN_LIBRARY).c
 	@echo "Compiling $(FOREIGN_LIBRARY).o object ..."
 	@$(CC) -O2 -fPIC -c $(C_SRC)/$(FOREIGN_LIBRARY).c -o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX)
 
-$(JNI_EXAMPLE_EXCEPTION).o: $(C_SRC)/$(JNI_EXAMPLE_EXCEPTION).c
-	@echo "Compiling $(JNI_EXAMPLE_EXCEPTION).o object ..."
-	@$(CC) -O2 -fPIC -c $(C_SRC)/$(JNI_EXAMPLE_EXCEPTION).c -o $(C_SRC)/$(JNI_EXAMPLE_EXCEPTION).o $(JNI_EXAMPLE_SUFFIX)
+$(JNI_EXAMPLE_UTILS).o: $(C_SRC)/$(JNI_EXAMPLE_UTILS).c
+	@echo "Compiling $(JNI_EXAMPLE_UTILS).o object ..."
+	@$(CC) -O2 -fPIC -c $(C_SRC)/$(JNI_EXAMPLE_UTILS).c -o $(C_SRC)/$(JNI_EXAMPLE_UTILS).o $(JNI_EXAMPLE_SUFFIX)
 
 $(MAINFILE).o: $(C_SRC)/$(MAINFILE).c
 	@echo "Compiling $(MAINFILE).o object ..."
 	@$(CC) -O2 -fPIC -c $(C_SRC)/$(MAINFILE).c -o $(C_SRC)/$(MAINFILE).o $(JNI_EXAMPLE_SUFFIX)
 
-main: $(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_EXCEPTION).o $(MAINFILE).o
+main: $(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_UTILS).o $(MAINFILE).o
 	@echo "Compiling lib$(LIBNAME).so ..."
-	@$(CC) -O2 -shared -o lib$(LIBNAME).so $(C_SRC)/$(MAINFILE).o $(C_SRC)/$(JNI_EXAMPLE_EXCEPTION).o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX)
+	@$(CC) -O2 -shared -o lib$(LIBNAME).so $(C_SRC)/$(MAINFILE).o $(C_SRC)/$(JNI_EXAMPLE_UTILS).o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX)
 	@echo "Striping $(LIBNAME).so ..."
 	@$(STRIP) lib$(LIBNAME).so
 	@echo "Disabling execstack ..."
@@ -50,8 +50,8 @@ main: $(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_EXCEPTION).o $(MAINFILE).o
 clean:
 	@echo "Cleaning $(FOREIGN_LIBRARY).o object ..."
 	rm $(C_SRC)/$(FOREIGN_LIBRARY).o
-	@echo "Cleaning $(JNI_EXAMPLE_EXCEPTION).o object ..."
-	rm $(C_SRC)/$(JNI_EXAMPLE_EXCEPTION).o
+	@echo "Cleaning $(JNI_EXAMPLE_UTILS).o object ..."
+	rm $(C_SRC)/$(JNI_EXAMPLE_UTILS).o
 	@echo "Cleaning $(MAINFILE).o object ..."
 	rm $(C_SRC)/$(MAINFILE).o
 	@echo "Cleaning $(LIBNAME) library..."
