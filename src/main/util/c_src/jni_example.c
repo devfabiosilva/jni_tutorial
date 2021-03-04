@@ -106,12 +106,6 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(JNIEnv *env, j
    return 0.0;
 }
 
-
-/*
- * Class:     org_jni_example_Main
- * Method:    javaStringToNativeByte
- * Signature: (Ljava/lang/String;)B
- */
 #define PARROT_MESSAGE "You said the following message: "
 /*
  * Class:     org_jni_example_Main
