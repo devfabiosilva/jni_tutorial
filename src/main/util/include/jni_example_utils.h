@@ -4,7 +4,12 @@
 #define STR_MESSAGE_MAX_SZ (size_t)1024
 char str_message[STR_MESSAGE_MAX_SZ];
 
-jint throwExampleNewException(JNIEnv *, const char *, const char *, int);
+jint throwExampleNewException(
+   JNIEnv *,
+   const char *,
+   const char *,
+   int
+);
 
 #define JNI_EXAMPLE_EXCEPTION_CLASS "org/jni/example/exceptions/JniExampleException"
 #define JNI_EXAMPLE_UTIL_EXCEPTION(msg, err) throwExampleNewException(env, JNI_EXAMPLE_EXCEPTION_CLASS, msg, err)

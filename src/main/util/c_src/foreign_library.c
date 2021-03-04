@@ -55,9 +55,9 @@ inline double *div_two_numbers(double *a, double b)
    return a;
 }
 
-unsigned long int random_longint()
+unsigned long long int random_longint()
 {
-   unsigned long int val;
+   unsigned long long int val;
    gen_rand_no_entropy_util((void *)&val, sizeof(val));
    return val;
 }

@@ -6,7 +6,10 @@
  * Method:    welcome
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_jni_example_Main_welcome(JNIEnv *env, jobject thisObj)
+JNIEXPORT jstring JNICALL Java_org_jni_example_Main_welcome(
+   JNIEnv *env,
+   jobject thisObj
+)
 {
    jstring res;
 
@@ -21,7 +24,11 @@ JNIEXPORT jstring JNICALL Java_org_jni_example_Main_welcome(JNIEnv *env, jobject
  * Method:    helloGuest
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_org_jni_example_Main_helloGuest(JNIEnv *env, jobject thisObj, jstring message)
+JNIEXPORT jstring JNICALL Java_org_jni_example_Main_helloGuest(
+   JNIEnv *env,
+   jobject thisObj,
+   jstring message
+)
 {
    int err;
    jstring res;
@@ -63,7 +70,12 @@ Java_org_jni_example_Main_helloGuest_EXIT1:
  * Method:    addTwoNumbers
  * Signature: (DD)D
  */
-JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_addTwoNumbers(JNIEnv *env, jobject thisObj, jdouble A, jdouble B)
+JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_addTwoNumbers(
+   JNIEnv *env,
+   jobject thisObj,
+   jdouble A,
+   jdouble B
+)
 {
    return (jdouble)add_two_numbers((double)A, (double)B);
 }
@@ -73,7 +85,12 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_addTwoNumbers(JNIEnv *env, j
  * Method:    subTwoNumbers
  * Signature: (DD)D
  */
-JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_subTwoNumbers(JNIEnv *env, jobject thisObj, jdouble A, jdouble B)
+JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_subTwoNumbers(
+   JNIEnv *env,
+   jobject thisObj,
+   jdouble A,
+   jdouble B
+)
 {
    return (jdouble)sub_two_numbers((double)A, (double)B);
 }
@@ -83,7 +100,12 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_subTwoNumbers(JNIEnv *env, j
  * Method:    multTwoNumbers
  * Signature: (DD)D
  */
-JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_multTwoNumbers(JNIEnv *env, jobject thisObj, jdouble A, jdouble B)
+JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_multTwoNumbers(
+   JNIEnv *env,
+   jobject thisObj,
+   jdouble A,
+   jdouble B
+)
 {
    return (jdouble)mult_two_numbers((double)A, (double)B);
 }
@@ -93,7 +115,12 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_multTwoNumbers(JNIEnv *env, 
  * Method:    divTwoNumbers
  * Signature: (DD)D
  */
-JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(JNIEnv *env, jobject thisObj, jdouble A, jdouble B)
+JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(
+   JNIEnv *env,
+   jobject thisObj,
+   jdouble A,
+   jdouble B
+)
 {
    double result=(double)A;
 
@@ -111,7 +138,11 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(JNIEnv *env, j
  * Method:    javaStringToNativeByte
  * Signature: (Ljava/lang/String;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(JNIEnv *env, jclass thisObj, jstring message)
+JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
+   JNIEnv *env,
+   jclass thisObj,
+   jstring message
+)
 {
    int err;
    size_t c_message_in_sz;
@@ -145,7 +176,13 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(JN
 #define MY_JNI_EXAMPLE_RESGISTRY_CLASS "org/jni/example/registry/JniExampleRegistry"
 #define MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE "()V"
 #define CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME "createNewExampleRegistry"
-JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(JNIEnv *env, jclass thisObj, jstring name, jobject age, jstring occupation)
+JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
+   JNIEnv *env,
+   jclass thisObj, 
+   jstring name,
+   jobject age,
+   jstring occupation
+)
 {
    int err;
    jobject result, javaLongObject;

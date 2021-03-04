@@ -30,6 +30,7 @@ lib$(FOREIGN_LIBRARY).so: $(C_SRC)/$(FOREIGN_LIBRARY).c
 	@$(CC) -O2 -shared $(C_SRC)/$(FOREIGN_LIBRARY).o -o lib$(FOREIGN_LIBRARY).so
 	@echo "Stripping lib$(FOREIGN_LIBRARY).so ..."
 	@$(STRIP) lib$(FOREIGN_LIBRARY).so
+	@chmod -x lib$(FOREIGN_LIBRARY).so
 
 $(JNI_EXAMPLE_UTILS).o: $(C_SRC)/$(JNI_EXAMPLE_UTILS).c
 	@echo "Compiling $(JNI_EXAMPLE_UTILS).o object ..."
