@@ -1,6 +1,6 @@
 #include <jni_example_utils.h>
 
-#define JNI_EXAMPLE_INIT_THROWABLE_WITH_CODE(class) (*env)->GetMethodID(env, class, "<init>", "(Ljava/lang/String;I)V")
+#define JNI_EXAMPLE_INIT_THROWABLE_WITH_CODE(class) (*env)->GetMethodID(env, class, JNI_EXAMPLE_INIT, "(Ljava/lang/String;I)V")
 
 jint throwExampleNewException(
    JNIEnv *env,

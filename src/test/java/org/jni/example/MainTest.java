@@ -4,7 +4,6 @@ import org.jni.example.exceptions.JniExampleException;
 import org.jni.example.registry.JniExampleRegistry;
 import org.junit.jupiter.api.Test;
 
-import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 import static org.jni.example.Main.*;
@@ -12,7 +11,7 @@ import static org.junit.Assert.*;
 
 class MainTest {
 
-    private double delta = 1E-9;
+    private final double delta = 1E-9;
 
     private void exceptionSuccess(int error, String message) {
         System.out.println("\nException success");
@@ -55,7 +54,7 @@ class MainTest {
 
         try {
             System.out.println(helloGuest(""));
-            fail("helloGuest should throw an JniExampleException in a empty string");
+            fail("helloGuest should throw an JniExampleException in an empty string");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
@@ -105,7 +104,7 @@ class MainTest {
         Double result = null;
         try {
             result = divTwoNumbers(A, B);
-            fail("Divide by zero is inconsistent. Should return a error");
+            fail("Divide by zero is inconsistent. Should return an error");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
@@ -121,52 +120,54 @@ class MainTest {
     }
 
     @Test
-    void stringToNativeByteTest() throws UnsupportedEncodingException {
-        byte[] byteArray = null;
+    void stringToNativeByteTest() throws Throwable {
+        byte[] byteArray = javaStringToNativeByte("Hello world from JNI");
 
-        try {
-            byteArray = javaStringToNativeByte("Hello world from JNI");
-        } catch (Throwable e) {
-            fail("It should not fail :(");
-        } finally {
-            assertNotNull(byteArray);
-            String returnedMessage = new String(byteArray, "UTF-8");
-            assertEquals(
-                    "You said the following message: Hello world from JNI",
-                    returnedMessage
-            );
-            System.out.println(returnedMessage);
-        }
+        assertNotNull(byteArray);
+        String returnedMessage = new String(byteArray, "UTF-8");
+        assertEquals(
+                "You said the following message: Hello world from JNI",
+                returnedMessage
+        );
+        System.out.println(returnedMessage);
     }
 
     @Test
-    void stringToNativeByteNullOrEmptyTest() {
+    void stringToNativeByteNullOrEmptyTest() throws Throwable {
         byte[] byteArray = null;
         try {
             byteArray = javaStringToNativeByte(null);
+            fail("It should expect a throw JniExampleException");
         } catch (Throwable e) {
+            if (e instanceof AssertionError)
+                throw e;
+
             assertTrue(e instanceof JniExampleException);
             assertEquals(20, ((JniExampleException) e).getError());
             assertEquals(
                     "jni_example_javaUTF8_to_c_char_util @ javaStringToNativeByte. Error in JNI example library 20. String can not be NULL",
                     e.getMessage()
             );
-        } finally {
-            assertNull(byteArray);
         }
+
+        assertNull(byteArray);
 
         try {
             byteArray = javaStringToNativeByte("");
+            fail("It should expect an JniExampleException on empty string");
         } catch (Throwable e) {
+            if (e instanceof AssertionError)
+                throw e;
+
             assertTrue(e instanceof JniExampleException);
             assertEquals(800, ((JniExampleException) e).getError());
             assertEquals(
                     "javaStringToNativeByte: Message can not be an empty string",
                     e.getMessage()
             );
-        } finally {
-            assertNull(byteArray);
         }
+
+        assertNull(byteArray);
     }
 
     @Test

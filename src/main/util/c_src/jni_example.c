@@ -1,4 +1,3 @@
-#include <stdint.h>
 #include <jni_example_utils.h>
 #include <foreign_library.h>
 
@@ -117,8 +116,6 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(JN
    int err;
    size_t c_message_in_sz;
    const char *c_message_in;
-   uint8_t *c_message_out;
-   size_t c_message_out_sz;
    jbyteArray outByteArray;
 
    if ((err=jni_example_javaUTF8_to_c_char_util(&c_message_in, &c_message_in_sz, env, message, "javaStringToNativeByte"))) {
@@ -131,21 +128,11 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(JN
       return NULL;
    }
 
-   if (!(c_message_out=malloc(c_message_out_sz=(sizeof(PARROT_MESSAGE)-1+c_message_in_sz)))) {
-      JNI_EXAMPLE_UTIL_EXCEPTION("javaStringToNativeByte: Could not alloc memory to store this message", 801);
-      return NULL;
-   }
-
-   if (!(outByteArray=(*env)->NewByteArray(env, c_message_out_sz))) {
+   if ((outByteArray=(*env)->NewByteArray(env, sizeof(PARROT_MESSAGE)-1+c_message_in_sz))) {
+      (*env)->SetByteArrayRegion(env, outByteArray, 0, sizeof(PARROT_MESSAGE)-1, (const jbyte *)PARROT_MESSAGE);
+      (*env)->SetByteArrayRegion(env, outByteArray, sizeof(PARROT_MESSAGE)-1, c_message_in_sz, (const jbyte *)c_message_in);
+   } else
       throwExampleError(env, "javaStringToNativeByte: Can't create JNI byte array");
-      goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
-   }
-
-   (*env)->SetByteArrayRegion(env, outByteArray, 0, sizeof(PARROT_MESSAGE)-1, (const jbyte *)PARROT_MESSAGE);
-   (*env)->SetByteArrayRegion(env, outByteArray, sizeof(PARROT_MESSAGE)-1, c_message_in_sz, (const jbyte *)c_message_in);
-
-Java_org_jni_example_Main_javaStringToNativeByte_EXIT1:
-   free(c_message_out);
 
    return outByteArray;
 }

@@ -1,12 +1,12 @@
 #
 #	AUTHOR: Fábio Pereira da Silva
-#	YEAR: 2020
+#	YEAR: 2021
 #	LICENSE: MIT
-#	EMAIL: fabioegel@gmail.com or fabioegel@protonmail.com
+#	EMAIL: fabioegel@gmail.com
 #
 
 # Generating tools
-#dom dez 06 16:49:52 -03 2020 
+#thu mar 04 14:52:02 -03 2021
 CC=gcc
 STRIP=strip
 EXECSTACK=execstack -c
@@ -23,9 +23,13 @@ JNI_EXAMPLE_SUFFIX=-I$(INCLUDEDIR) -I$(JAVAINCLUDE) -I$(JAVAINCLUDE_LINUX)
 
 all: main
 
-$(FOREIGN_LIBRARY).o: $(C_SRC)/$(FOREIGN_LIBRARY).c
+lib$(FOREIGN_LIBRARY).so: $(C_SRC)/$(FOREIGN_LIBRARY).c
 	@echo "Compiling $(FOREIGN_LIBRARY).o object ..."
 	@$(CC) -O2 -fPIC -c $(C_SRC)/$(FOREIGN_LIBRARY).c -o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX)
+	@echo "Compiling lib$(FOREIGN_LIBRARY).so ..."
+	@$(CC) -O2 -shared $(C_SRC)/$(FOREIGN_LIBRARY).o -o lib$(FOREIGN_LIBRARY).so
+	@echo "Stripping lib$(FOREIGN_LIBRARY).so ..."
+	@$(STRIP) lib$(FOREIGN_LIBRARY).so
 
 $(JNI_EXAMPLE_UTILS).o: $(C_SRC)/$(JNI_EXAMPLE_UTILS).c
 	@echo "Compiling $(JNI_EXAMPLE_UTILS).o object ..."
@@ -35,9 +39,9 @@ $(MAINFILE).o: $(C_SRC)/$(MAINFILE).c
 	@echo "Compiling $(MAINFILE).o object ..."
 	@$(CC) -O2 -fPIC -c $(C_SRC)/$(MAINFILE).c -o $(C_SRC)/$(MAINFILE).o $(JNI_EXAMPLE_SUFFIX)
 
-main: $(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_UTILS).o $(MAINFILE).o
+main: lib$(FOREIGN_LIBRARY).so $(JNI_EXAMPLE_UTILS).o $(MAINFILE).o
 	@echo "Compiling lib$(LIBNAME).so ..."
-	@$(CC) -O2 -shared -o lib$(LIBNAME).so $(C_SRC)/$(MAINFILE).o $(C_SRC)/$(JNI_EXAMPLE_UTILS).o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX)
+	@$(CC) -O2 -shared -o lib$(LIBNAME).so $(C_SRC)/$(MAINFILE).o $(C_SRC)/$(JNI_EXAMPLE_UTILS).o $(JNI_EXAMPLE_SUFFIX) -L$(PWD) -l$(FOREIGN_LIBRARY)
 	@echo "Striping $(LIBNAME).so ..."
 	@$(STRIP) lib$(LIBNAME).so
 	@echo "Disabling execstack ..."
@@ -54,6 +58,9 @@ clean:
 	rm $(C_SRC)/$(JNI_EXAMPLE_UTILS).o
 	@echo "Cleaning $(MAINFILE).o object ..."
 	rm $(C_SRC)/$(MAINFILE).o
-	@echo "Cleaning $(LIBNAME) library..."
+	@echo "Cleaning lib$(LIBNAME) library..."
 	rm lib$(LIBNAME).so
+	@echo "Cleaning lib$(FOREIGN_LIBRARY).so library..."
+	rm lib$(FOREIGN_LIBRARY).so
+
 
