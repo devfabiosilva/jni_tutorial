@@ -3,12 +3,11 @@ package org.jni.example;
 import org.jni.example.registry.JniExampleRegistry;
 
 public class Main {
-
     static {
         try {
             System.loadLibrary("jniexample");
         } catch (Throwable e) {
-            System.out.println("Load library error.");
+            System.out.println("JNI example load library error.");
             System.out.println(e.getMessage());
             throw e;
         }
@@ -20,5 +19,6 @@ public class Main {
     public static native double subTwoNumbers(double A, double B);
     public static native double multTwoNumbers(double A, double B);
     public static native double divTwoNumbers(double A, double B) throws Throwable;
+    public static native byte[] javaStringToNativeByte(String message) throws Throwable;
     public static native JniExampleRegistry createNewExampleRegistry(String name, Integer age, String occupation) throws Throwable;
 }
