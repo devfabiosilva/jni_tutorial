@@ -14,7 +14,7 @@ jint throwExampleNewException(
 #define JNI_EXAMPLE_EXCEPTION_CLASS "org/jni/example/exceptions/JniExampleException"
 #define JNI_EXAMPLE_UTIL_EXCEPTION(msg, err) throwExampleNewException(env, JNI_EXAMPLE_EXCEPTION_CLASS, msg, err)
 #define JNI_EXAMPLE_LANG_EXCEPTION_CLASS "java/lang/Exception"
-#define throwExampleError(env, msg) throwExampleNewException(env, JNI_EXAMPLE_LANG_EXCEPTION_CLASS, msg, 0)
+#define throwExampleError(msg) throwExampleNewException(env, JNI_EXAMPLE_LANG_EXCEPTION_CLASS, msg, 0)
 
 #define JNI_EXAMPLE_INIT "<init>"
 #define JNI_EXAMPLE_JAVA_LANG_LONG_CLASS "java/lang/Long"
@@ -25,7 +25,11 @@ jint throwExampleNewException(
 #define JNI_EXAMPLE_JAVA_LANG_INTEGER_SIGNATURE "L"JNI_EXAMPLE_JAVA_LANG_INTEGER";"
 #define JNI_EXAMPLE_INIT_SIGNATURE "(J)V"
 
-#define C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION "Error when parsing C string to Java UTF-8"
+#define C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION "JNI example error. Parsing C string to Java UTF-8"
+#define ERROR_CANT_CREATE_BYTE_ARRAY "JNI example error. Can't create byte array"
+#define ERROR_CANT_WRITE_BYTE_ARRAY "JNI example error. Can't write byte array in allocated memory space"
+
+#define JNI_EXAMPLE_DEREF_UTF8_STR(str, c_str) (*env)->ReleaseStringUTFChars(env, str, c_str)
 
 int jni_example_javaUTF8_to_c_char_util(
    const char **,

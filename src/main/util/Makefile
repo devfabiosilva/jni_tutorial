@@ -63,5 +63,3 @@ clean:
 	rm lib$(LIBNAME).so
 	@echo "Cleaning lib$(FOREIGN_LIBRARY).so library..."
 	rm lib$(FOREIGN_LIBRARY).so
-
-

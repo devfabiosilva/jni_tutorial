@@ -14,7 +14,7 @@ JNIEXPORT jstring JNICALL Java_org_jni_example_Main_welcome(
    jstring res;
 
    if (!(res=(*env)->NewStringUTF(env, welcome())))
-      throwExampleError(env, C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION);
+      throwExampleError(C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION);
 
    return res;
 }
@@ -55,12 +55,12 @@ JNIEXPORT jstring JNICALL Java_org_jni_example_Main_helloGuest(
    }
 
    if (!(res=(*env)->NewStringUTF(env, c_message_out)))
-      throwExampleError(env, C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION);
+      throwExampleError(C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION);
 
    free(c_message_out);
 
 Java_org_jni_example_Main_helloGuest_EXIT1:
-   (*env)->ReleaseStringUTFChars(env, message, c_message_in);
+   JNI_EXAMPLE_DEREF_UTF8_STR(message, c_message_in);
 
    return res;
 }
@@ -122,9 +122,9 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(
    jdouble B
 )
 {
-   double result=(double)A;
+   jdouble result=A;
 
-   if (div_two_numbers(&result, (double)B))
+   if (div_two_numbers((double *)&result, (double)B))
       return result;
 
    JNI_EXAMPLE_UTIL_EXCEPTION("divTwoNumbers: Can not divide by ZERO!", 300);
@@ -132,12 +132,12 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(
    return 0.0;
 }
 
-#define PARROT_MESSAGE "You said the following message: "
 /*
  * Class:     org_jni_example_Main
  * Method:    javaStringToNativeByte
  * Signature: (Ljava/lang/String;)[B
  */
+#define PARROT_MESSAGE "You said the following message: "
 JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
    JNIEnv *env,
    jclass thisObj,
@@ -156,14 +156,28 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
 
    if (!c_message_in_sz) {
       JNI_EXAMPLE_UTIL_EXCEPTION("javaStringToNativeByte: Message can not be an empty string", 800);
-      return NULL;
+      goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
    }
 
    if ((outByteArray=(*env)->NewByteArray(env, sizeof(PARROT_MESSAGE)-1+c_message_in_sz))) {
+
       (*env)->SetByteArrayRegion(env, outByteArray, 0, sizeof(PARROT_MESSAGE)-1, (const jbyte *)PARROT_MESSAGE);
+
+      if ((*env)->ExceptionCheck(env)) {
+         throwExampleError("javaStringToNativeByte: "ERROR_CANT_WRITE_BYTE_ARRAY);
+         goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
+      }
+
       (*env)->SetByteArrayRegion(env, outByteArray, sizeof(PARROT_MESSAGE)-1, c_message_in_sz, (const jbyte *)c_message_in);
+
+      if ((*env)->ExceptionCheck(env))
+         throwExampleError("javaStringToNativeByte: "ERROR_CANT_WRITE_BYTE_ARRAY);
+
    } else
-      throwExampleError(env, "javaStringToNativeByte: Can't create JNI byte array");
+      throwExampleError("javaStringToNativeByte: "ERROR_CANT_CREATE_BYTE_ARRAY);
+
+Java_org_jni_example_Main_javaStringToNativeByte_EXIT1:
+   JNI_EXAMPLE_DEREF_UTF8_STR(message, c_message_in);
 
    return outByteArray;
 }

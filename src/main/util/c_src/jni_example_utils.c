@@ -30,25 +30,25 @@ jint throwExampleNewException(
 
       if (!(errMsg=(*env)->NewStringUTF(env, message))) {
          sprintf(err_msg, "throwExampleNewException: Cannot set message '%s' into throwable class '%s' and errcode %d", message, class, error);
-         throwExampleError(env, err_msg);
+         throwExampleError(err_msg);
          return 3;
       }
 
       if (!(methodId=JNI_EXAMPLE_INIT_THROWABLE_WITH_CODE(exClass))) {
          sprintf(err_msg, "throwExampleNewException: Cannot initialize throwable class '%s' with message '%s' and errcode %d", class, message, error);
-         throwExampleError(env, err_msg);
+         throwExampleError(err_msg);
          err=4;
          goto throwExampleNewException_EXIT1;
       }
 
       if (!(jErrObj=(*env)->NewObject(env, exClass, methodId, errMsg, error))) {
          sprintf(err_msg, "throwExampleNewException: Cannot create throwable class '%s' with message '%s' and errcode %d", class, message, error);
-         throwExampleError(env, err_msg);
+         throwExampleError(err_msg);
          err=5;
       } else if ((err=(*env)->Throw(env, jErrObj))) {
          (*env)->DeleteLocalRef(env, jErrObj);
          sprintf(err_msg, "throwExampleNewException: Can't throw '%s' with message '%s' and errcode %d", class, message, error);
-         throwExampleError(env, err_msg);
+         throwExampleError(err_msg);
       }
 
 throwExampleNewException_EXIT1:

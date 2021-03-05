@@ -1,5 +1,8 @@
 #include <foreign_library.h>
 
+#define WELCOME_MSG "Welcome. This is a JNI example"
+#define HELLO_GUEST_MSG "Hello %s this is a JNI example test. Have a nice day ;)"
+
 void gen_rand_no_entropy_util(void *output, size_t output_len)
 {
    FILE *f;
