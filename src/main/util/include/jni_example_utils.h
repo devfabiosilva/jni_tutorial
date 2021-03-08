@@ -23,7 +23,7 @@ jint throwExampleNewException(
 #define JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE "L"JNI_EXAMPLE_JAVA_LANG_STRING";"
 #define JNI_EXAMPLE_JAVA_LANG_INTEGER "java/lang/Integer"
 #define JNI_EXAMPLE_JAVA_LANG_INTEGER_SIGNATURE "L"JNI_EXAMPLE_JAVA_LANG_INTEGER";"
-#define JNI_EXAMPLE_INIT_SIGNATURE "(J)V"
+#define JNI_EXAMPLE_INIT_SET_LONG_SIGNATURE "(J)V"
 
 #define C_STR_TO_JAVA_UTF8_ERROR_EXCEPTION "JNI example error. Parsing C string to Java UTF-8"
 #define ERROR_CANT_CREATE_BYTE_ARRAY "JNI example error. Can't create byte array"
@@ -46,7 +46,7 @@ int jni_example_create_new_java_long(
    const char *
 );
 
-int jni_example_create_new_object_util(
+int jni_example_create_new_object(
    JNIEnv *,
    jobject *,
    jclass *,

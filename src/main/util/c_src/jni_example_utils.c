@@ -86,7 +86,7 @@ int jni_example_javaUTF8_to_c_char_util(
 
    return 0;
 }
-
+/*
 int jni_example_create_new_java_long(
    JNIEnv *env,
    jobject *newJavaLongObj,
@@ -117,7 +117,97 @@ int jni_example_create_new_java_long(
 
    return err;
 }
+*/
 
+int jni_example_create_new_object_util(
+   JNIEnv *env,
+   jobject *thisNewObject,
+   jclass *jniClass,
+   jmethodID *jniMethodId,
+   const char *class_name,
+   const char *signature,
+   const char *function_name,
+   const char *parent_function_name
+)
+{
+   int err;
+
+   *thisNewObject=NULL;
+   *jniMethodId=NULL;
+
+   if (!(*jniClass=(*env)->FindClass(env, class_name))) {
+      sprintf(str_message, "%s @ %s. Could not find class \"%s\". Error = %d", function_name, parent_function_name, class_name, err=400);
+      return err;
+   }
+
+   if (!(*jniMethodId=(*env)->GetMethodID(env, *jniClass, JNI_EXAMPLE_INIT, signature))) {
+      *jniClass=NULL;
+      sprintf(str_message, "%s @ %s. Could not get method at \"%s\" class. Error = %d", function_name, parent_function_name, class_name, err=401);
+      return err;
+   }
+
+   err=0;
+   if (!(*thisNewObject=(*env)->NewObject(env, *jniClass, *jniMethodId))) {
+      *jniClass=NULL;
+      *jniMethodId=NULL;
+      sprintf(str_message, "%s @ %s. Could not create new object with \"%s\" class. Error = %d", function_name, parent_function_name, class_name, err=402);
+   }
+
+   return err;
+}
+
+inline int jni_example_create_new_object(
+   JNIEnv *env,
+   jobject *thisNewObject,
+   jclass *jniClass,
+   jmethodID *jniMethodId,
+   const char *class_name,
+   const char *signature,
+   const char *function_name
+)
+{
+   return jni_example_create_new_object_util(
+      env,
+      thisNewObject,
+      jniClass,
+      jniMethodId,
+      class_name,
+      signature,
+      "jni_example_create_new_object",
+      function_name
+   );
+}
+
+inline int jni_example_create_new_java_long(
+   JNIEnv *env,
+   jobject *newJavaLongObj,
+   signed long long int value,
+   const char *function_name
+)
+{
+   int err;
+   jclass javaLongClass;
+   jmethodID methodId;
+
+   if ((err=jni_example_create_new_object_util(
+      env,
+      newJavaLongObj,
+      &javaLongClass,
+      &methodId,
+      JNI_EXAMPLE_JAVA_LANG_LONG_CLASS,
+      JNI_EXAMPLE_INIT_SET_LONG_SIGNATURE,
+      "jni_example_create_new_java_long",
+      function_name)))
+      return err;
+
+   err=0;
+   if (!(*newJavaLongObj=(*env)->NewObject(env, javaLongClass, methodId, (jlong)value)))
+      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not create new Long object. Error = %d", function_name, err=502);
+
+   return err;
+}
+
+/*
 int jni_example_create_new_object_util(
    JNIEnv *env,
    jobject *thisNewObject,
@@ -154,6 +244,7 @@ int jni_example_create_new_object_util(
    return err;
 }
 
+*/
 int jni_example_set_value(
    JNIEnv *env,
    jclass destClass,

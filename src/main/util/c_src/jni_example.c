@@ -228,7 +228,7 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
       return NULL;
    }
 
-   if ((err=jni_example_create_new_object_util(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE,
+   if ((err=jni_example_create_new_object(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE,
       CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       return NULL;
