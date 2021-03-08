@@ -86,38 +86,6 @@ int jni_example_javaUTF8_to_c_char_util(
 
    return 0;
 }
-/*
-int jni_example_create_new_java_long(
-   JNIEnv *env,
-   jobject *newJavaLongObj,
-   signed long long int value,
-   const char *function_name
-)
-{
-   int err;
-   jmethodID methodId;
-   jclass javaLongClass;
-
-   *newJavaLongObj=NULL;
-   if (!(javaLongClass=(*env)->FindClass(env, JNI_EXAMPLE_JAVA_LANG_LONG_CLASS))) {
-      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not find class \""JNI_EXAMPLE_JAVA_LANG_LONG_CLASS"\". Error = %d",
-         function_name, err=500);
-      return err;
-   }
-
-   if (!(methodId=(*env)->GetMethodID(env, javaLongClass, JNI_EXAMPLE_INIT, JNI_EXAMPLE_INIT_SIGNATURE))) {
-      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not init method with signature \""JNI_EXAMPLE_INIT_SIGNATURE"\". Error = %d",
-         function_name, err=501);
-      return err;
-   }
-
-   err=0;
-   if (!(*newJavaLongObj=(*env)->NewObject(env, javaLongClass, methodId, (jlong)value)))
-      sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not create new Long object. Error = %d", function_name, err=502);
-
-   return err;
-}
-*/
 
 int jni_example_create_new_object_util(
    JNIEnv *env,
@@ -207,44 +175,6 @@ inline int jni_example_create_new_java_long(
    return err;
 }
 
-/*
-int jni_example_create_new_object_util(
-   JNIEnv *env,
-   jobject *thisNewObject,
-   jclass *jniClass,
-   jmethodID *jniMethodId,
-   const char *class_name,
-   const char *signature,
-   const char *function_name
-)
-{
-   int err;
-
-   *thisNewObject=NULL;
-   *jniMethodId=NULL;
-
-   if (!(*jniClass=(*env)->FindClass(env, class_name))) {
-      sprintf(str_message, "jni_example_create_new_object @ %s. Could not find class \"%s\". Error = %d", function_name, class_name, err=400);
-      return err;
-   }
-
-   if (!(*jniMethodId=(*env)->GetMethodID(env, *jniClass, JNI_EXAMPLE_INIT, signature))) {
-      *jniClass=NULL;
-      sprintf(str_message, "jni_example_create_new_object @ %s. Could not get method at \"%s\" class. Error = %d", function_name, class_name, err=401);
-      return err;
-   }
-
-   err=0;
-   if (!(*thisNewObject=(*env)->NewObject(env, *jniClass, *jniMethodId))) {
-      *jniClass=NULL;
-      *jniMethodId=NULL;
-      sprintf(str_message, "jni_example_create_new_object @ %s. Could not create new object with \"%s\" class. Error = %d", function_name, class_name, err=402);
-   }
-
-   return err;
-}
-
-*/
 int jni_example_set_value(
    JNIEnv *env,
    jclass destClass,
