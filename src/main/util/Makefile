@@ -20,12 +20,13 @@ JNI_EXAMPLE_UTILS=jni_example_utils
 FOREIGN_LIBRARY=foreign_library
 C_SRC=$(PWD)/c_src
 JNI_EXAMPLE_SUFFIX=-I$(INCLUDEDIR) -I$(JAVAINCLUDE) -I$(JAVAINCLUDE_LINUX)
+PLATFORM?=UNIX
 
 all: main
 
 lib$(FOREIGN_LIBRARY).so: $(C_SRC)/$(FOREIGN_LIBRARY).c
 	@echo "Compiling $(FOREIGN_LIBRARY).o object ..."
-	@$(CC) -O2 -fPIC -c $(C_SRC)/$(FOREIGN_LIBRARY).c -o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX)
+	@$(CC) -O2 -fPIC -c $(C_SRC)/$(FOREIGN_LIBRARY).c -o $(C_SRC)/$(FOREIGN_LIBRARY).o $(JNI_EXAMPLE_SUFFIX) -D$(PLATFORM)
 	@echo "Compiling lib$(FOREIGN_LIBRARY).so ..."
 	@$(CC) -O2 -shared $(C_SRC)/$(FOREIGN_LIBRARY).o -o lib$(FOREIGN_LIBRARY).so
 	@echo "Stripping lib$(FOREIGN_LIBRARY).so ..."

@@ -5,6 +5,9 @@
 
 void gen_rand_no_entropy_util(void *output, size_t output_len)
 {
+#ifdef EXAMPLE_WIN
+ #error "Windows DLL not implemented yet"
+#else
    FILE *f;
    size_t rnd_sz, left;
 
@@ -18,9 +21,7 @@ void gen_rand_no_entropy_util(void *output, size_t output_len)
       left-=rnd_sz;
 
    fclose(f);
-
-   return;
-
+#endif
 }
 
 inline const char *welcome()

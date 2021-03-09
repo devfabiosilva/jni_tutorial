@@ -1,5 +1,5 @@
 package org.jni.example.registry;
-// Don't modify this class. It is used in Native JNI library
+// Don't modify this class. It is used by Native JNI library
 public class JniExampleRegistry {
     private Long id = null;
     private String name = null;
