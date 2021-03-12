@@ -238,10 +238,11 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_nativeRamdomNumberGenerat
    if ((*env)->ExceptionCheck(env))
       sprintf(str_message,
          NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Can't set ramdom bytes (%llu) at region [%p]. Error = %d",
-         (unsigned long long int)size, (void *)outByteArray, err=903);
+         (unsigned long long int)size, (void *)outByteArray, err=904);
+
+   memset(rnd, 0, (size_t)size);
 
 Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT2:
-   memset(rnd, 0, (size_t)size);
    free(rnd);
 
    if (err) {
