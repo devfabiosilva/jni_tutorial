@@ -1,9 +1,10 @@
 package org.jni.example;
 
+import org.jetbrains.annotations.NotNull;
 import org.jni.example.exceptions.JniExampleException;
 import org.jni.example.registry.JniExampleRegistry;
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
-
 import java.util.HashMap;
 
 import static org.jni.example.Main.*;
@@ -17,6 +18,26 @@ class MainTest {
         System.out.println("\nException success");
         System.out.println("Expected error message: " + message);
         System.out.println("Expected error numner: " + error + "\n");
+    }
+
+    private String printByteHexToString(byte[] byteArray) {
+        StringBuilder str = new StringBuilder();
+
+        for (byte b : byteArray)
+            str.append(String.format("%02x", b));
+
+        return str.toString();
+    }
+
+    private String printByteHexToIntegerStr(byte[] byteArray) {
+        StringBuilder str = new StringBuilder();
+
+        for (byte b : byteArray)
+            str.append(String.format("%d ", b));
+
+        final String substring = str.substring(0, str.length() - 1);
+
+        return substring;
     }
 
     @Test
@@ -282,5 +303,54 @@ class MainTest {
             );
         }
         assertNull(jniExampleRegistry);
+    }
+
+//    @Test
+//    @Ignore
+//    void systemRandomBigSizeInMemoryTest() throws Throwable {
+//        final long size = 1024*1024*1024;
+//        byte [] rand = nativeRamdomNumberGeneratorNoEntropy(size);
+//        assertNotNull(rand);
+//        assertEquals(size, rand.length);
+//    }
+
+    @Test
+    void systemRandomTest() throws Throwable {
+        final long size = 32;
+        byte [] rand = nativeRamdomNumberGeneratorNoEntropy(size);
+        assertNotNull(rand);
+        assertEquals(size, rand.length);
+        System.out.println("Generated random size");
+        System.out.println(printByteHexToString(rand));
+        System.out.println(printByteHexToIntegerStr(rand));
+
+        rand = null;
+        try {
+            rand = nativeRamdomNumberGeneratorNoEntropy(0);
+            fail("Should fail. Can't generate random number with 0 size");
+        } catch (Throwable e) {
+            if (e instanceof AssertionError)
+                throw e;
+
+            assertTrue(e instanceof JniExampleException);
+            assertEquals(901, ((JniExampleException)e).getError());
+            assertEquals("nativeRamdomNumberGeneratorNoEntropy: Size cannot be zero 901", e.getMessage());
+        }
+
+        assertNull(rand);
+
+        try {
+            rand = nativeRamdomNumberGeneratorNoEntropy(-1);
+            fail("Should fail. Can't generate random number with negative size");
+        } catch (Throwable e) {
+            if (e instanceof AssertionError)
+                throw e;
+
+            assertTrue(e instanceof JniExampleException);
+            assertEquals(900, ((JniExampleException)e).getError());
+            assertEquals("nativeRamdomNumberGeneratorNoEntropy: Size value cannot be negative 900", e.getMessage());
+        }
+
+        assertNull(rand);
     }
 }

@@ -138,6 +138,7 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(
  * Signature: (Ljava/lang/String;)[B
  */
 #define PARROT_MESSAGE "You said the following message: "
+#define JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME "javaStringToNativeByte"
 JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
    JNIEnv *env,
    jclass thisObj,
@@ -155,7 +156,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
    }
 
    if (!c_message_in_sz) {
-      JNI_EXAMPLE_UTIL_EXCEPTION("javaStringToNativeByte: Message can not be an empty string", 800);
+      JNI_EXAMPLE_UTIL_EXCEPTION(JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": Message can not be an empty string", 800);
       goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
    }
 
@@ -164,20 +165,91 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
       (*env)->SetByteArrayRegion(env, outByteArray, 0, sizeof(PARROT_MESSAGE)-1, (const jbyte *)PARROT_MESSAGE);
 
       if ((*env)->ExceptionCheck(env)) {
-         throwExampleError("javaStringToNativeByte: "ERROR_CANT_WRITE_BYTE_ARRAY);
-         goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
+         strcpy(str_message, JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": "ERROR_CANT_WRITE_BYTE_ARRAY);
+         goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT2;
       }
 
       (*env)->SetByteArrayRegion(env, outByteArray, sizeof(PARROT_MESSAGE)-1, c_message_in_sz, (const jbyte *)c_message_in);
 
-      if ((*env)->ExceptionCheck(env))
-         throwExampleError("javaStringToNativeByte: "ERROR_CANT_WRITE_BYTE_ARRAY);
+      if ((*env)->ExceptionCheck(env)) {
+         strcpy(str_message, JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": "ERROR_CANT_WRITE_BYTE_ARRAY);
+         goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT2;
+      }
 
-   } else
-      throwExampleError("javaStringToNativeByte: "ERROR_CANT_CREATE_BYTE_ARRAY);
+      goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
+   }
+
+   strcpy(str_message, JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": "ERROR_CANT_CREATE_BYTE_ARRAY);
+
+Java_org_jni_example_Main_javaStringToNativeByte_EXIT2:
+   throwExampleError(str_message);
+   (*env)->DeleteLocalRef(env, outByteArray);
+   outByteArray=NULL;
 
 Java_org_jni_example_Main_javaStringToNativeByte_EXIT1:
    JNI_EXAMPLE_DEREF_UTF8_STR(message, c_message_in);
+
+   return outByteArray;
+}
+
+/*
+ * Class:     org_jni_example_Main
+ * Method:    nativeRamdomNumberGeneratorNoEntropy
+ * Signature: (J)[B
+ */
+#define NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME "nativeRamdomNumberGeneratorNoEntropy"
+JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy(JNIEnv *env, jclass thisObject, jlong size)
+{
+   int err;
+   jbyteArray outByteArray;
+   unsigned char *rnd;
+   const char *p;
+
+   err=0;
+   if (size<0)
+      sprintf(str_message, NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Size value cannot be negative %d", err=900);
+   else if (!size)
+      sprintf(str_message, NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Size cannot be zero %d", err=901);
+
+   if (err) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      return NULL;
+   }
+
+   if (!(outByteArray=(*env)->NewByteArray(env, (jsize)size))) {
+      sprintf(str_message, NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": "ERROR_CANT_CREATE_BYTE_ARRAY". Maybe size %llu is too long",
+         (unsigned long long int)size);
+      throwExampleError(str_message);
+      return NULL;
+   }
+
+   if (!(rnd=malloc((size_t)size))) {
+      sprintf(str_message, "Can't alloc %llu bytes to store in system memory. Maybe size is too long. Err = %d", (unsigned long long int)size, err=902);
+      goto Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT1;
+   }
+
+   if ((p=gen_rand_no_entropy_util((void *)rnd, (size_t)size))) {
+      sprintf(str_message, "gen_rand_no_entropy_util @ "NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Can't open file: %s. Err = %d", p, err=903);
+      goto Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT2;
+   }
+
+   (*env)->SetByteArrayRegion(env, outByteArray, 0, (jsize)size, (const jbyte *)rnd);
+
+   if ((*env)->ExceptionCheck(env))
+      sprintf(str_message,
+         NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Can't set ramdom bytes (%llu) at region [%p]. Error = %d",
+         (unsigned long long int)size, (void *)outByteArray, err=903);
+
+Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT2:
+   memset(rnd, 0, (size_t)size);
+   free(rnd);
+
+   if (err) {
+Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT1:
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+      (*env)->DeleteLocalRef(env, outByteArray);
+      outByteArray=NULL;
+   }
 
    return outByteArray;
 }
@@ -202,6 +274,8 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
    jobject result, javaLongObject;
    jclass jniClass;
    jmethodID jniMethodId;
+   unsigned long long int random_system_id;
+   const char *p;
 
    if (!name) {
       JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be null", 700);
@@ -228,13 +302,19 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
       return NULL;
    }
 
+   if ((p=random_longint(&random_system_id))) {
+      sprintf(str_message, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": Can't open system ramdom number generator \"%s\".", p);
+      JNI_EXAMPLE_UTIL_EXCEPTION(str_message, 705);
+      return NULL;
+   }
+
    if ((err=jni_example_create_new_object(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE,
       CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       return NULL;
    }
 
-   if ((err=jni_example_create_new_java_long(env, &javaLongObject, (signed long long int)random_longint(), CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+   if ((err=jni_example_create_new_java_long(env, &javaLongObject, (signed long long int)random_system_id, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT1;
    }
