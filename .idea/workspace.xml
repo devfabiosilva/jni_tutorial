@@ -59,7 +59,7 @@
       <recent name="org.jni.example" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest">
+  <component name="RunManager" selected="Makefile.all">
     <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
@@ -121,8 +121,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MainTest" />
         <item itemvalue="Makefile.all" />
+        <item itemvalue="JUnit.MainTest" />
         <item itemvalue="JUnit.MainTest.systemRandomTest" />
         <item itemvalue="JUnit.MainTest.createNewExampleRegistryNameNullOrEmpty_Test" />
         <item itemvalue="Makefile.lib$(FOREIGN_LIBRARY).so" />

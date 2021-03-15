@@ -122,10 +122,10 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(
    jdouble B
 )
 {
-   jdouble result=A;
+   double result=(double)A;
 
-   if (div_two_numbers((double *)&result, (double)B))
-      return result;
+   if (div_two_numbers(&result, (double)B))
+      return (jdouble)result;
 
    JNI_EXAMPLE_UTIL_EXCEPTION("divTwoNumbers: Can not divide by ZERO!", 300);
 
