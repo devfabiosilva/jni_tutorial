@@ -88,10 +88,10 @@ int jni_example_javaUTF8_to_c_char_util(
 }
 
 int jni_example_create_new_object_util(
-   JNIEnv *env,
    jobject *thisNewObject,
    jclass *jniClass,
    jmethodID *jniMethodId,
+   JNIEnv *env,
    const char *class_name,
    const char *signature,
    const char *function_name,
@@ -128,20 +128,20 @@ int jni_example_create_new_object_util(
 }
 
 inline int jni_example_create_new_object(
-   JNIEnv *env,
    jobject *thisNewObject,
    jclass *jniClass,
    jmethodID *jniMethodId,
+   JNIEnv *env,
    const char *class_name,
    const char *signature,
    const char *function_name
 )
 {
    return jni_example_create_new_object_util(
-      env,
       thisNewObject,
       jniClass,
       jniMethodId,
+      env,
       class_name,
       signature,
       "jni_example_create_new_object",
@@ -150,8 +150,8 @@ inline int jni_example_create_new_object(
 }
 
 int jni_example_create_new_java_long(
-   JNIEnv *env,
    jobject *newJavaLongObj,
+   JNIEnv *env,
    signed long long int value,
    const char *function_name
 )
@@ -161,10 +161,10 @@ int jni_example_create_new_java_long(
    jmethodID methodId;
 
    if ((err=jni_example_create_new_object_util(
-      env,
       NULL,
       &javaLongClass,
       &methodId,
+      env,
       JNI_EXAMPLE_JAVA_LANG_LONG_CLASS,
       JNI_EXAMPLE_INIT_SET_LONG_SIGNATURE,
       "jni_example_create_new_java_long",
@@ -179,9 +179,9 @@ int jni_example_create_new_java_long(
 }
 
 int jni_example_set_value(
-   JNIEnv *env,
    jclass destClass,
    jobject destObject,
+   JNIEnv *env,
    jobject sourceObject,
    const char *fieldName,
    const char *signature,
@@ -205,4 +205,3 @@ int jni_example_set_value(
 
    return err;
 }
-

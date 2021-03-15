@@ -156,6 +156,7 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
    }
 
    if (!c_message_in_sz) {
+      outByteArray=NULL;
       JNI_EXAMPLE_UTIL_EXCEPTION(JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": Message can not be an empty string", 800);
       goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
    }
@@ -309,36 +310,36 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
       return NULL;
    }
 
-   if ((err=jni_example_create_new_object(env, &result, &jniClass, &jniMethodId, MY_JNI_EXAMPLE_RESGISTRY_CLASS, MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE,
+   if ((err=jni_example_create_new_object(&result, &jniClass, &jniMethodId, env, MY_JNI_EXAMPLE_RESGISTRY_CLASS, MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE,
       CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       return NULL;
    }
 
-   if ((err=jni_example_create_new_java_long(env, &javaLongObject, (signed long long int)random_system_id, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+   if ((err=jni_example_create_new_java_long(&javaLongObject, env, (signed long long int)random_system_id, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT1;
    }
 
-   if ((err=jni_example_set_value(env, jniClass, result, javaLongObject, "id", JNI_EXAMPLE_JAVA_LANG_LONG_CLASS_SIGNATURE,
+   if ((err=jni_example_set_value(jniClass, result, env, javaLongObject, "id", JNI_EXAMPLE_JAVA_LANG_LONG_CLASS_SIGNATURE,
          CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT2;
    }
 
-   if ((err=jni_example_set_value(env, jniClass, result, name, "name", JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE,
+   if ((err=jni_example_set_value(jniClass, result, env, name, "name", JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE,
          CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT2;
    }
 
-   if ((err=jni_example_set_value(env, jniClass, result, age, "age", JNI_EXAMPLE_JAVA_LANG_INTEGER_SIGNATURE,
+   if ((err=jni_example_set_value(jniClass, result, env, age, "age", JNI_EXAMPLE_JAVA_LANG_INTEGER_SIGNATURE,
          CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       goto Java_org_jni_example_Main_createNewExampleRegistry_EXIT2;
    }
 
-   if ((err=jni_example_set_value(env, jniClass, result, occupation, "occupation", JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE,
+   if ((err=jni_example_set_value(jniClass, result, env, occupation, "occupation", JNI_EXAMPLE_JAVA_LANG_STRING_SIGNATURE,
          CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
 
 Java_org_jni_example_Main_createNewExampleRegistry_EXIT2:

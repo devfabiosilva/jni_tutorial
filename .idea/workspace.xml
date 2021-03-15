@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d2be27f-a758-458d-9ce0-0b69383583f2" name="Default Changelist" comment="Committing final">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/include/foreign_library.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/foreign_library.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,6 +78,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainTest.createNewExampleRegistryNameNullOrEmpty_Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jniexample" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.jni.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.jni.example" />
+      <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
+      <option name="METHOD_NAME" value="createNewExampleRegistryNameNullOrEmpty_Test" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainTest.systemRandomTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
@@ -100,12 +116,6 @@
       </makefile>
       <method v="2" />
     </configuration>
-    <configuration name="clean" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
-      <makefile filename="$PROJECT_DIR$/src/main/util/Makefile" target="clean" workingDirectory="" arguments="">
-        <envs />
-      </makefile>
-      <method v="2" />
-    </configuration>
     <configuration name="lib$(FOREIGN_LIBRARY).so" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/src/main/util/Makefile" target="lib$(FOREIGN_LIBRARY).so" workingDirectory="" arguments="">
         <envs />
@@ -116,9 +126,9 @@
       <list>
         <item itemvalue="JUnit.MainTest" />
         <item itemvalue="Makefile.all" />
-        <item itemvalue="Makefile.lib$(FOREIGN_LIBRARY).so" />
-        <item itemvalue="Makefile.clean" />
         <item itemvalue="JUnit.MainTest.systemRandomTest" />
+        <item itemvalue="JUnit.MainTest.createNewExampleRegistryNameNullOrEmpty_Test" />
+        <item itemvalue="Makefile.lib$(FOREIGN_LIBRARY).so" />
       </list>
     </recent_temporary>
   </component>
@@ -163,47 +173,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>221</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>223</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>224</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>226</line>
-          <option name="timeStamp" value="4" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>227</line>
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>229</line>
-          <option name="timeStamp" value="6" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>230</line>
-          <option name="timeStamp" value="7" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>231</line>
-          <option name="timeStamp" value="8" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java</url>
-          <line>195</line>
+          <line>193</line>
           <option name="timeStamp" value="9" />
         </line-breakpoint>
       </breakpoints>

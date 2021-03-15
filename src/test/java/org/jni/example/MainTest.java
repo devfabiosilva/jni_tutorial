@@ -1,9 +1,7 @@
 package org.jni.example;
 
-import org.jetbrains.annotations.NotNull;
 import org.jni.example.exceptions.JniExampleException;
 import org.jni.example.registry.JniExampleRegistry;
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import java.util.HashMap;
 
