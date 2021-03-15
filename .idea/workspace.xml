@@ -7,9 +7,6 @@
     <list default="true" id="0d2be27f-a758-458d-9ce0-0b69383583f2" name="Default Changelist" comment="Committing final">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

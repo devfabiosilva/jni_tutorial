@@ -180,7 +180,8 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_javaStringToNativeByte(
       goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
    }
 
-   strcpy(str_message, JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": "ERROR_CANT_CREATE_BYTE_ARRAY);
+   throwExampleError(JAVA_STRING_TO_NATIVE_BYTE_FUNCTION_NAME": "ERROR_CANT_CREATE_BYTE_ARRAY);
+   goto Java_org_jni_example_Main_javaStringToNativeByte_EXIT1;
 
 Java_org_jni_example_Main_javaStringToNativeByte_EXIT2:
    throwExampleError(str_message);
