@@ -13,6 +13,12 @@ public class Main {
         }
     }
 
+    /**
+     * welcome()
+     * Text here example
+     * @return
+     * @throws Throwable
+     */
     public static native String welcome() throws Throwable;
     public static native String helloGuest(String message) throws Throwable;
     public static native double addTwoNumbers(double A, double B);

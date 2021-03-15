@@ -306,9 +306,8 @@ class MainTest {
     }
 
 //    @Test
-//    @Ignore
 //    void systemRandomBigSizeInMemoryTest() throws Throwable {
-//        final long size = 1024*1024*1024;
+//        final long size = 1024*1024*1024L;
 //        byte [] rand = nativeRamdomNumberGeneratorNoEntropy(size);
 //        assertNotNull(rand);
 //        assertEquals(size, rand.length);

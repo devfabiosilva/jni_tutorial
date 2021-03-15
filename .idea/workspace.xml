@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d2be27f-a758-458d-9ce0-0b69383583f2" name="Default Changelist" comment="Committing final">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/foreign_library.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/foreign_library.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/util/include/foreign_library.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/foreign_library.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" afterDir="false" />
     </list>
@@ -28,6 +26,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1p5rC4Egy7zKYlKRSbJvxatDQal" />
   <component name="ProjectLevelVcsManager">
@@ -61,7 +62,7 @@
       <recent name="org.jni.example" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest.systemRandomTest">
+  <component name="RunManager" selected="JUnit.MainTest">
     <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
@@ -73,22 +74,6 @@
       <option name="PACKAGE_NAME" value="org.jni.example" />
       <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
       <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainTest.systemRandomBigSizeInMemoryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="jniexample" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.jni.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.jni.example" />
-      <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
-      <option name="METHOD_NAME" value="systemRandomBigSizeInMemoryTest" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -109,25 +94,31 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="all" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/src/main/util/Makefile" target="all" workingDirectory="" arguments="">
+        <envs />
+      </makefile>
+      <method v="2" />
+    </configuration>
     <configuration name="clean" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
       <makefile filename="$PROJECT_DIR$/src/main/util/Makefile" target="clean" workingDirectory="" arguments="">
         <envs />
       </makefile>
       <method v="2" />
     </configuration>
-    <configuration name="main" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
-      <makefile filename="$PROJECT_DIR$/src/main/util/Makefile" target="main" workingDirectory="" arguments="">
+    <configuration name="lib$(FOREIGN_LIBRARY).so" type="MAKEFILE_TARGET_RUN_CONFIGURATION" factoryName="Makefile" temporary="true">
+      <makefile filename="$PROJECT_DIR$/src/main/util/Makefile" target="lib$(FOREIGN_LIBRARY).so" workingDirectory="" arguments="">
         <envs />
       </makefile>
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.MainTest.systemRandomTest" />
         <item itemvalue="JUnit.MainTest" />
-        <item itemvalue="JUnit.MainTest.systemRandomBigSizeInMemoryTest" />
-        <item itemvalue="Makefile.main" />
+        <item itemvalue="Makefile.all" />
+        <item itemvalue="Makefile.lib$(FOREIGN_LIBRARY).so" />
         <item itemvalue="Makefile.clean" />
+        <item itemvalue="JUnit.MainTest.systemRandomTest" />
       </list>
     </recent_temporary>
   </component>
