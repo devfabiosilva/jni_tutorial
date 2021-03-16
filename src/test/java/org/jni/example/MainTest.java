@@ -40,12 +40,18 @@ class MainTest {
 
     @Test
     void welcomeTest() throws Throwable {
-        System.out.println(welcome());
+        String welcomeMessage = welcome();
+        assertNotNull(welcomeMessage);
+        assertEquals("Welcome. This is a JNI example. I hope you enjoy this tutorial", welcomeMessage);
+        System.out.println(welcomeMessage);
     }
 
     @Test
     void helloGuestTest() throws Throwable {
-        System.out.println(helloGuest("my dear friend"));
+        String helloGuestMessage = helloGuest("my dear friend");
+        assertNotNull(helloGuestMessage);
+        assertEquals("Hello my dear friend this is a JNI example test. Have a nice day ;)", helloGuestMessage);
+        System.out.println(helloGuestMessage);
     }
 
     @Test

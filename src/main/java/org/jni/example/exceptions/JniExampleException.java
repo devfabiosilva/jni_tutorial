@@ -9,6 +9,6 @@ public class JniExampleException extends Throwable {
     }
 
     public int getError() {
-        return error;
+        return this.error;
     }
 }

@@ -1,4 +1,3 @@
-.idea/
 *.o
 *.so
 target/
@@ -14,3 +13,4 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 docs/
 pdf/
+.idea/

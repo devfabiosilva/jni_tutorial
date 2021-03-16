@@ -1,6 +1,6 @@
 #include <foreign_library.h>
 
-#define WELCOME_MSG "Welcome. This is a JNI example"
+#define WELCOME_MSG "Welcome. This is a JNI example. I hope you enjoy this tutorial"
 #define HELLO_GUEST_MSG "Hello %s this is a JNI example test. Have a nice day ;)"
 
 inline const char *welcome() { return WELCOME_MSG; }

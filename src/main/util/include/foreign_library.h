@@ -19,7 +19,7 @@
 /**
  * @fn welcome
  * @brief Show Welcome message
- * @retval Welcome message value
+ * @retval Welcome message string pointer
  */
 const char *welcome();
 
