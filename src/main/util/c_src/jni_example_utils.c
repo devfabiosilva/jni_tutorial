@@ -171,7 +171,6 @@ int jni_example_create_new_java_long(
       function_name)))
       return err;
 
-   err=0;
    if (!(*newJavaLongObj=(*env)->NewObject(env, javaLongClass, methodId, (jlong)value)))
       sprintf(str_message, "jni_example_create_new_java_long @ %s. Could not create new Long object. Error = %d", function_name, err=502);
 

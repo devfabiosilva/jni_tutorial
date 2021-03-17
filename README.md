@@ -1,10 +1,18 @@
-# JNI tutorial
-JNI (Java Native Interface) tutorial for beginners
+# JNI (Java Native Interface) tutorial for beginners
+
 ## Introduction
-- Create a shared library in C containing simple basic functions
+
+This tutorial will brief explain to you how to create a simple resource access between your Java VM code and native OS
+
+What you will learn:
+
+- Create a shared library in C containing simple basic functions and simple resource to access your system
 - Create your JNI library in C to access your shared library
-- Compile JNI shared library
+- Compile JNI shared library, access your custom class, throw an Exception or Throwable through native code
 - Integrate JNI to your Java or Kotlin
+- Create a documentation for C using Doxygen
+- Create a documentation for Java using Javadoc
+- Integrate tests
 
 ### Create a shared library in C containing simple basic functions
 
