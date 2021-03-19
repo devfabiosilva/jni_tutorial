@@ -26,6 +26,6 @@ public class Main {
     public static native double multTwoNumbers(double A, double B);
     public static native double divTwoNumbers(double A, double B) throws Throwable;
     public static native byte[] javaStringToNativeByte(String message) throws Throwable;
-    public static native byte[] nativeRamdomNumberGeneratorNoEntropy(long size) throws Throwable;
+    public static native byte[] nativeRandomNumberGeneratorNoEntropy(long size) throws Throwable;
     public static native JniExampleRegistry createNewExampleRegistry(String name, Integer age, String occupation) throws Throwable;
 }

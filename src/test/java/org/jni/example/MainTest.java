@@ -2,11 +2,13 @@ package org.jni.example;
 
 import org.jni.example.exceptions.JniExampleException;
 import org.jni.example.registry.JniExampleRegistry;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 
 import static org.jni.example.Main.*;
-import static org.junit.Assert.*;
+
 
 class MainTest {
 
@@ -15,7 +17,7 @@ class MainTest {
     private void exceptionSuccess(int error, String message) {
         System.out.println("\nException success");
         System.out.println("Expected error message: " + message);
-        System.out.println("Expected error numner: " + error + "\n");
+        System.out.println("Expected error number: " + error + "\n");
     }
 
     private String printByteHexToString(byte[] byteArray) {
@@ -33,24 +35,22 @@ class MainTest {
         for (byte b : byteArray)
             str.append(String.format("%d ", b));
 
-        final String substring = str.substring(0, str.length() - 1);
-
-        return substring;
+        return str.substring(0, str.length() - 1);
     }
 
     @Test
     void welcomeTest() throws Throwable {
         String welcomeMessage = welcome();
-        assertNotNull(welcomeMessage);
-        assertEquals("Welcome. This is a JNI example. I hope you enjoy this tutorial", welcomeMessage);
+        Assertions.assertNotNull(welcomeMessage);
+        Assertions.assertEquals("Welcome. This is a JNI example. I hope you enjoy this tutorial", welcomeMessage);
         System.out.println(welcomeMessage);
     }
 
     @Test
     void helloGuestTest() throws Throwable {
         String helloGuestMessage = helloGuest("my dear friend");
-        assertNotNull(helloGuestMessage);
-        assertEquals("Hello my dear friend this is a JNI example test. Have a nice day ;)", helloGuestMessage);
+        Assertions.assertNotNull(helloGuestMessage);
+        Assertions.assertEquals("Hello my dear friend this is a JNI example test. Have a nice day ;)", helloGuestMessage);
         System.out.println(helloGuestMessage);
     }
 
@@ -59,14 +59,14 @@ class MainTest {
 
         try {
             System.out.println(helloGuest(null));
-            fail("helloGuest error should add an JniExampleException");
+            Assertions.fail("helloGuest error should add an JniExampleException");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(20, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(20, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "jni_example_javaUTF8_to_c_char_util @ helloGuest. Error in JNI example library 20. String can not be NULL",
                     e.getMessage()
             );
@@ -79,14 +79,14 @@ class MainTest {
 
         try {
             System.out.println(helloGuest(""));
-            fail("helloGuest should throw an JniExampleException in an empty string");
+            Assertions.fail("helloGuest should throw an JniExampleException in an empty string");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(100, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(100, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "helloGuest: \"message\" is an empty string!",
                     e.getMessage()
             );
@@ -98,28 +98,28 @@ class MainTest {
     void addTwoNumbersTest() {
         double A = 3.5;
         double B = 5.6;
-        assertEquals(9.1, addTwoNumbers(A, B), 0.0);
+        Assertions.assertEquals(9.1, addTwoNumbers(A, B), 0.0);
     }
 
     @Test
     void subTwoNumbersTest() {
         double A = 3.5;
         double B = 5.6;
-        assertEquals(-2.1, subTwoNumbers(A, B), delta);
+        Assertions.assertEquals(-2.1, subTwoNumbers(A, B), delta);
     }
 
     @Test
     void multTwoNumbersTest() {
         double A = 15.23;
         double B = 26.32;
-        assertEquals(400.8536, multTwoNumbers(A, B), delta);
+        Assertions.assertEquals(400.8536, multTwoNumbers(A, B), delta);
     }
 
     @Test
     void divTwoNumbersTest() throws Throwable {
         double A = 10;
         double B = 3;
-        assertEquals((double) 10 / 3, divTwoNumbers(A, B), delta);
+        Assertions.assertEquals((double) 10 / 3, divTwoNumbers(A, B), delta);
     }
 
     @Test
@@ -129,28 +129,28 @@ class MainTest {
         Double result = null;
         try {
             result = divTwoNumbers(A, B);
-            fail("Divide by zero is inconsistent. Should return an error");
+            Assertions.fail("Divide by zero is inconsistent. Should return an error");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(300, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(300, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "divTwoNumbers: Can not divide by ZERO!",
                     e.getMessage());
             exceptionSuccess(((JniExampleException) e).getError(), e.getMessage());
         }
-        assertNull(result);
+        Assertions.assertNull(result);
     }
 
     @Test
     void stringToNativeByteTest() throws Throwable {
         byte[] byteArray = javaStringToNativeByte("Hello world from JNI");
 
-        assertNotNull(byteArray);
-        String returnedMessage = new String(byteArray, "UTF-8");
-        assertEquals(
+        Assertions.assertNotNull(byteArray);
+        String returnedMessage = new String(byteArray, StandardCharsets.UTF_8);
+        Assertions.assertEquals(
                 "You said the following message: Hello world from JNI",
                 returnedMessage
         );
@@ -162,37 +162,37 @@ class MainTest {
         byte[] byteArray = null;
         try {
             byteArray = javaStringToNativeByte(null);
-            fail("It should expect a throw JniExampleException");
+            Assertions.fail("It should expect a throw JniExampleException");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(20, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(20, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "jni_example_javaUTF8_to_c_char_util @ javaStringToNativeByte. Error in JNI example library 20. String can not be NULL",
                     e.getMessage()
             );
         }
 
-        assertNull(byteArray);
+        Assertions.assertNull(byteArray);
 
         try {
             byteArray = javaStringToNativeByte("");
-            fail("It should expect an JniExampleException on empty string");
+            Assertions.fail("It should expect an JniExampleException on empty string");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(800, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(800, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "javaStringToNativeByte: Message can not be an empty string",
                     e.getMessage()
             );
         }
 
-        assertNull(byteArray);
+        Assertions.assertNull(byteArray);
     }
 
     @Test
@@ -206,11 +206,11 @@ class MainTest {
 
         exampleRegistryHashMap.forEach((k, v) -> {
             System.out.println("Testing k = " + k);
-            assertNotNull(v);
-            assertNotNull(v.getId());
-            assertNotNull(v.getName());
-            assertNotNull(v.getAge());
-            assertNotNull(v.getOccupation());
+            Assertions.assertNotNull(v);
+            Assertions.assertNotNull(v.getId());
+            Assertions.assertNotNull(v.getName());
+            Assertions.assertNotNull(v.getAge());
+            Assertions.assertNotNull(v.getOccupation());
             System.out.println("==============================");
             System.out.println("Generated long random ID = " + v.getId());
             System.out.println("Name = " + v.getName());
@@ -226,33 +226,33 @@ class MainTest {
         JniExampleRegistry jniExampleRegistry = null;
         try {
             jniExampleRegistry = createNewExampleRegistry(null, 20, "Test");
-            fail("createNewExampleRegistry should throw a JniExampleException when \"name\" field is null");
+            Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"name\" field is null");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(700, ((JniExampleException) e).getError());
-            assertEquals("createNewExampleRegistry: \"name\" field can not be null", e.getMessage());
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(700, ((JniExampleException) e).getError());
+            Assertions.assertEquals("createNewExampleRegistry: \"name\" field can not be null", e.getMessage());
         }
 
-        assertNull(jniExampleRegistry);
+        Assertions.assertNull(jniExampleRegistry);
 
         try {
             jniExampleRegistry = createNewExampleRegistry("", 20, "Test");
-            fail("createNewExampleRegistry should throw a JniExampleException when \"name\" field is empty");
+            Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"name\" field is empty");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(701, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(701, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "createNewExampleRegistry: \"name\" field can not be an empty string",
                     e.getMessage()
             );
         }
-        assertNull(jniExampleRegistry);
+        Assertions.assertNull(jniExampleRegistry);
     }
 
     @Test
@@ -260,19 +260,19 @@ class MainTest {
         JniExampleRegistry jniExampleRegistry = null;
         try {
             jniExampleRegistry = createNewExampleRegistry("Alice", null, "Test");
-            fail("\"createNewExampleRegistry should throw a JniExampleException when \"age\" field is null\"");
+            Assertions.fail("\"createNewExampleRegistry should throw a JniExampleException when \"age\" field is null\"");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(702, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(702, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "createNewExampleRegistry: \"age\" field can not be null",
                     e.getMessage()
             );
         }
-        assertNull(jniExampleRegistry);
+        Assertions.assertNull(jniExampleRegistry);
     }
 
     @Test
@@ -280,80 +280,72 @@ class MainTest {
         JniExampleRegistry jniExampleRegistry = null;
         try {
             jniExampleRegistry = createNewExampleRegistry("Alice", 20, null);
-            fail("createNewExampleRegistry should throw a JniExampleException when \"occupation\" field is null");
+            Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"occupation\" field is null");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(703, ((JniExampleException) e).getError());
-            assertEquals("createNewExampleRegistry: \"occupation\" field can not be null", e.getMessage());
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(703, ((JniExampleException) e).getError());
+            Assertions.assertEquals("createNewExampleRegistry: \"occupation\" field can not be null", e.getMessage());
         }
 
-        assertNull(jniExampleRegistry);
+        Assertions.assertNull(jniExampleRegistry);
 
         try {
             jniExampleRegistry = createNewExampleRegistry("Alice", 20, "");
-            fail("createNewExampleRegistry should throw a JniExampleException when \"occupation\" field is empty");
+            Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"occupation\" field is empty");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(704, ((JniExampleException) e).getError());
-            assertEquals(
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(704, ((JniExampleException) e).getError());
+            Assertions.assertEquals(
                     "createNewExampleRegistry: \"occupation\" field can not be an empty string",
                     e.getMessage()
             );
         }
-        assertNull(jniExampleRegistry);
+        Assertions.assertNull(jniExampleRegistry);
     }
-
-//    @Test
-//    void systemRandomBigSizeInMemoryTest() throws Throwable {
-//        final long size = 1024*1024*1024L;
-//        byte [] rand = nativeRamdomNumberGeneratorNoEntropy(size);
-//        assertNotNull(rand);
-//        assertEquals(size, rand.length);
-//    }
 
     @Test
     void systemRandomTest() throws Throwable {
         final long size = 32;
-        byte [] rand = nativeRamdomNumberGeneratorNoEntropy(size);
-        assertNotNull(rand);
-        assertEquals(size, rand.length);
+        byte [] rand = nativeRandomNumberGeneratorNoEntropy(size);
+        Assertions.assertNotNull(rand);
+        Assertions.assertEquals(size, rand.length);
         System.out.println("Generated random size");
         System.out.println(printByteHexToString(rand));
         System.out.println(printByteHexToIntegerStr(rand));
 
         rand = null;
         try {
-            rand = nativeRamdomNumberGeneratorNoEntropy(0);
-            fail("Should fail. Can't generate random number with 0 size");
+            rand = nativeRandomNumberGeneratorNoEntropy(0);
+            Assertions.fail("Should fail. Can't generate random number with 0 size");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(901, ((JniExampleException)e).getError());
-            assertEquals("nativeRamdomNumberGeneratorNoEntropy: Size cannot be zero 901", e.getMessage());
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(901, ((JniExampleException)e).getError());
+            Assertions.assertEquals("nativeRandomNumberGeneratorNoEntropy: Size cannot be zero 901", e.getMessage());
         }
 
-        assertNull(rand);
+        Assertions.assertNull(rand);
 
         try {
-            rand = nativeRamdomNumberGeneratorNoEntropy(-1);
-            fail("Should fail. Can't generate random number with negative size");
+            rand = nativeRandomNumberGeneratorNoEntropy(-1);
+            Assertions.fail("Should fail. Can't generate random number with negative size");
         } catch (Throwable e) {
             if (e instanceof AssertionError)
                 throw e;
 
-            assertTrue(e instanceof JniExampleException);
-            assertEquals(900, ((JniExampleException)e).getError());
-            assertEquals("nativeRamdomNumberGeneratorNoEntropy: Size value cannot be negative 900", e.getMessage());
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(900, ((JniExampleException)e).getError());
+            Assertions.assertEquals("nativeRandomNumberGeneratorNoEntropy: Size value cannot be negative 900", e.getMessage());
         }
 
-        assertNull(rand);
+        Assertions.assertNull(rand);
     }
 }

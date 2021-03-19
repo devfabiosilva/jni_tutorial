@@ -196,11 +196,11 @@ Java_org_jni_example_Main_javaStringToNativeByte_EXIT1:
 
 /*
  * Class:     org_jni_example_Main
- * Method:    nativeRamdomNumberGeneratorNoEntropy
+ * Method:    nativeRandomNumberGeneratorNoEntropy
  * Signature: (J)[B
  */
-#define NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME "nativeRamdomNumberGeneratorNoEntropy"
-JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy(JNIEnv *env, jclass thisObject, jlong size)
+#define NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME "nativeRandomNumberGeneratorNoEntropy"
+JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy(JNIEnv *env, jclass thisObject, jlong size)
 {
    int err;
    jbyteArray outByteArray;

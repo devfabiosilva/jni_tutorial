@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="0d2be27f-a758-458d-9ce0-0b69383583f2" name="Default Changelist" comment="Committing final">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,9 +25,6 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectId" id="1p5rC4Egy7zKYlKRSbJvxatDQal" />
   <component name="ProjectLevelVcsManager">
@@ -76,6 +74,22 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MainTest.Playground" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="jniexample" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.jni.example.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.jni.example" />
+      <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
+      <option name="METHOD_NAME" value="Playground" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="MainTest.helloGuestTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
@@ -87,22 +101,6 @@
       <option name="PACKAGE_NAME" value="org.jni.example" />
       <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
       <option name="METHOD_NAME" value="helloGuestTest" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MainTest.systemRandomTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="jniexample" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="org.jni.example.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="org.jni.example" />
-      <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
-      <option name="METHOD_NAME" value="systemRandomTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -133,10 +131,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.MainTest" />
+        <item itemvalue="Makefile.all" />
+        <item itemvalue="JUnit.MainTest.Playground" />
         <item itemvalue="JUnit.MainTest.helloGuestTest" />
         <item itemvalue="JUnit.MainTest.welcomeTest" />
-        <item itemvalue="Makefile.all" />
-        <item itemvalue="JUnit.MainTest.systemRandomTest" />
       </list>
     </recent_temporary>
   </component>
