@@ -227,28 +227,28 @@ JNIEXPORT jbyteArray JNICALL Java_org_jni_example_Main_nativeRandomNumberGenerat
 
    if (!(rnd=malloc((size_t)size))) {
       sprintf(str_message, "Can't alloc %llu bytes to store in system memory. Maybe size is too long. Err = %d", (unsigned long long int)size, err=902);
-      goto Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT1;
+      goto Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy_EXIT1;
    }
 
    if ((p=gen_rand_no_entropy_util((void *)rnd, (size_t)size))) {
       sprintf(str_message, "gen_rand_no_entropy_util @ "NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Can't open file: %s. Err = %d", p, err=903);
-      goto Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT2;
+      goto Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy_EXIT2;
    }
 
    (*env)->SetByteArrayRegion(env, outByteArray, 0, (jsize)size, (const jbyte *)rnd);
 
    if ((*env)->ExceptionCheck(env))
       sprintf(str_message,
-         NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Can't set ramdom bytes (%llu) at region [%p]. Error = %d",
+         NATIVE_RANDOM_NUMBER_GENERATOR_MO_ENTROPY_FUNCTION_NAME": Can't set random bytes (%llu) at region [%p]. Error = %d",
          (unsigned long long int)size, (void *)outByteArray, err=904);
 
    memset(rnd, 0, (size_t)size);
 
-Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT2:
+Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy_EXIT2:
    free(rnd);
 
    if (err) {
-Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT1:
+Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy_EXIT1:
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       (*env)->DeleteLocalRef(env, outByteArray);
       outByteArray=NULL;
@@ -265,6 +265,18 @@ Java_org_jni_example_Main_nativeRamdomNumberGeneratorNoEntropy_EXIT1:
 #define MY_JNI_EXAMPLE_RESGISTRY_CLASS "org/jni/example/registry/JniExampleRegistry"
 #define MY_JNI_EXAMPLE_RESGISTRY_CLASS_SIGNATURE "()V"
 #define CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME "createNewExampleRegistry"
+#define CHECK_CREATE_NEW_EXAMPLE_REGISTRY_INPUTS_ARE_NULL (const char []){\
+  PARM_CHECKER_IS_JSTRING,\
+  PARM_CHECKER_IS_JAVA_INTEGER,\
+  PARM_CHECKER_IS_JSTRING,\
+  PARM_CHECKER_END\
+}
+#define CHECK_CREATE_NEW_EXAMPLE_REGISTRY_INPUTS_ARE_VALID (const char []){\
+  PARM_CHECKER_IS_TRUE,\
+  PARM_CHECKER_IS_TRUE,\
+  PARM_CHECKER_END\
+}
+
 JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
    JNIEnv *env,
    jclass thisObj, 
@@ -280,30 +292,20 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
    unsigned long long int random_system_id;
    const char *p;
 
-   if (!name) {
-      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be null", 700);
-      return NULL;
-   }
+   if (jni_example_input_parameters_checker_util(
+         env,
+         CHECK_CREATE_NEW_EXAMPLE_REGISTRY_INPUTS_ARE_NULL,
+         name, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be null", 700,
+         age, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"age\" field can not be null", 702,
+         occupation, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be null", 703
+      )) return NULL;
 
-   if ((*env)->GetStringUTFLength(env, name)==0) {
-      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be an empty string", 701);
-      return NULL;
-   }
-
-   if (!age) {
-      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"age\" field can not be null", 702);
-      return NULL;
-   }
-
-   if (!occupation) {
-      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be null", 703);
-      return NULL;
-   }
-
-   if ((*env)->GetStringUTFLength(env, occupation)==0) {
-      JNI_EXAMPLE_UTIL_EXCEPTION(CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be an empty string", 704);
-      return NULL;
-   }
+   if (jni_example_input_parameters_checker_util(
+         env,
+         CHECK_CREATE_NEW_EXAMPLE_REGISTRY_INPUTS_ARE_VALID,
+         (int)((*env)->GetStringUTFLength(env, name)==0), CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be an empty string", 701,
+         (int)((*env)->GetStringUTFLength(env, occupation)==0), CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be an empty string", 704
+      )) return NULL;
 
    if ((p=random_longint(&random_system_id))) {
       sprintf(str_message, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": Can't open system ramdom number generator \"%s\".", p);
@@ -349,7 +351,7 @@ Java_org_jni_example_Main_createNewExampleRegistry_EXIT2:
    if (err) {
 Java_org_jni_example_Main_createNewExampleRegistry_EXIT1:
       (*env)->DeleteLocalRef(env, result);
-      result=NULL;
+      return NULL;
    }
 
    return result;

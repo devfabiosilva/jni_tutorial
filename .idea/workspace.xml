@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d2be27f-a758-458d-9ce0-0b69383583f2" name="Default Changelist" comment="Committing final">
+      <change afterPath="$PROJECT_DIR$/hs_err_pid8586.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/jni/example/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/include/foreign_library.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/foreign_library.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -106,7 +109,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.welcomeTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.systemRandomTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
         <pattern>
@@ -116,7 +119,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.jni.example" />
       <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
-      <option name="METHOD_NAME" value="welcomeTest" />
+      <option name="METHOD_NAME" value="systemRandomTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -132,9 +135,9 @@
       <list>
         <item itemvalue="JUnit.MainTest" />
         <item itemvalue="Makefile.all" />
+        <item itemvalue="JUnit.MainTest.systemRandomTest" />
         <item itemvalue="JUnit.MainTest.Playground" />
         <item itemvalue="JUnit.MainTest.helloGuestTest" />
-        <item itemvalue="JUnit.MainTest.welcomeTest" />
       </list>
     </recent_temporary>
   </component>

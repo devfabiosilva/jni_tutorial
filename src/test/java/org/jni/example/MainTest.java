@@ -9,7 +9,6 @@ import java.util.HashMap;
 
 import static org.jni.example.Main.*;
 
-
 class MainTest {
 
     private final double delta = 1E-9;

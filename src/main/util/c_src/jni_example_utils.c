@@ -204,3 +204,42 @@ int jni_example_set_value(
 
    return err;
 }
+
+int jni_example_input_parameters_checker_util(
+   JNIEnv *env,
+   const char *parms,
+   ...
+)
+{
+   int err=0;
+   const char *p;
+   va_list args;
+
+   va_start(args, parms);
+   while (*parms) {
+      switch (*(parms++)) {
+         case PARM_CHECKER_IS_TRUE:
+            err=(int)va_arg(args, int);
+            goto jni_example_input_parameters_checker_util_EXIT1;
+         case PARM_CHECKER_IS_JSTRING:
+         case PARM_CHECKER_IS_JBYTE_ARRAY:
+         case PARM_CHECKER_IS_JAVA_INTEGER:
+            err=(int)(((void *)va_arg(args, void *))==NULL);
+      }
+
+jni_example_input_parameters_checker_util_EXIT1:
+      if (!err) {
+         va_arg(args, const char *);
+         va_arg(args, int);
+         continue;
+      }
+
+      p=(const char *)va_arg(args, const char *);
+      JNI_EXAMPLE_UTIL_EXCEPTION(p, err=(int)va_arg(args, int));
+      break;
+   }
+   va_end(args);
+
+   return err;
+}
+

@@ -254,3 +254,16 @@ int jni_example_set_value(
    const char *,
    const char *
 );
+
+
+#define PARM_CHECKER_IS_TRUE (char)'t'
+#define PARM_CHECKER_IS_JSTRING (char)'n'
+#define PARM_CHECKER_IS_JBYTE_ARRAY (char)'b'
+#define PARM_CHECKER_IS_JAVA_INTEGER (char)'I'
+#define PARM_CHECKER_END (char)'\0'
+int jni_example_input_parameters_checker_util(
+   JNIEnv *,
+   const char *,
+   ...
+);
+

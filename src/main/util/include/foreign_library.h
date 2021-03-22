@@ -7,13 +7,26 @@
  * @brief Simple JNI example tutorial documentation title
  * @mainpage Overview
  * @details Example JNI (Java Native Interface) tutorial example
- * # Introduction
- * Todo introduction
- * # Tesing example title
  *
- * - Ex 1
- * - Ex 2
- * _This_ is a **simple** text _**here**_
+ * # Introduction
+ *
+ * This tutorial is a simple implementation of a compiled native code and its code is accessed by Java VM.
+ *
+ * Here you will learn how to implement a simple library _*.so_ for UNIX systems or _*.dll_ for Windows systems and access all resources from JNI
+ *
+ * # Preparing your environment
+ *
+ * ## Installing your C compiler:
+ *
+ * ### Linux
+ *
+ * You must install your gcc, make, ...
+ * TODO
+ * ### Mac
+ *
+ * TODO
+ *
+ * ### Windows
  */
 
 /**
