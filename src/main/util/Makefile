@@ -1,10 +1,3 @@
-#
-#	AUTHOR: Fábio Pereira da Silva
-#	YEAR: 2021
-#	LICENSE: MIT
-#	EMAIL: fabioegel@gmail.com
-#
-
 # Generating tools
 #thu mar 04 14:52:02 -03 2021
 CC=gcc

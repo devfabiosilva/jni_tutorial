@@ -255,12 +255,69 @@ int jni_example_set_value(
    const char *
 );
 
-
+/**
+ * @def PARM_CHECKER_IS_TRUE
+ * @brief Fails if condition is TRUE @see jni_example_input_parameters_checker_util
+ */
 #define PARM_CHECKER_IS_TRUE (char)'t'
+
+/**
+ * @def PARM_CHECKER_IS_JSTRING
+ * @brief Fails if _jstring_ is _NULL_ @see jni_example_input_parameters_checker_util
+ */
 #define PARM_CHECKER_IS_JSTRING (char)'n'
+
+/**
+ * @def PARM_CHECKER_IS_JBYTE_ARRAY
+ * @brief Fails if _jbyteArray_ is _NULL_ @see jni_example_input_parameters_checker_util
+ */
 #define PARM_CHECKER_IS_JBYTE_ARRAY (char)'b'
+
+/**
+ * @def PARM_CHECKER_IS_JAVA_INTEGER
+ * @brief Fails if _Integer_ is _NULL_ @see jni_example_input_parameters_checker_util
+ */
 #define PARM_CHECKER_IS_JAVA_INTEGER (char)'I'
+
+/**
+ * @def PARM_CHECKER_END
+ * @brief End checker flag. @see jni_example_input_parameters_checker_util
+ */
 #define PARM_CHECKER_END (char)'\0'
+
+/**
+ * @fn int jni_example_input_parameters_checker_util(
+ *     JNIEnv *env,
+ *     const char *parms,
+ *     ...
+ *  )
+ *
+ * @brief Checks if Java VM parameters are valid. It is used in internal JNI.
+ *
+ * @param [in] env Java VM environment
+ * @param [in] parms Input parameters flags
+ * @param [in] ... Parameters where parameters are:
+ *
+ * - _Input parameters:_ Java VM input
+ * - _Error message:_ Message when error occurs. Can NOT be _NULL_
+ * - _Error code:_ Custom Java VM error code
+ *
+ * **Example:**
+ *
+ * ```c
+ *    ...
+ *    const char VALIDATOR[] = {PARM_CHECKER_IS_JSTRING, PARM_CHECKER_IS_TRUE, PARM_CHECKER_END};
+ *    jbyteArray out = NULL;
+ *
+ *    if (jni_example_input_parameters_checker_util(env, VALIDATOR, name, "Name cannot be empty", 1234, (int)(age <= 0), "Age cannot be 0 or negative", 4567))
+ *       return NULL;
+ *    ...
+ * ```
+ *
+ * @retval 0 if success otherwise error if non zero
+ *
+ * **NOTICE** It throws a custom Throwable in JVM.
+ */
 int jni_example_input_parameters_checker_util(
    JNIEnv *,
    const char *,

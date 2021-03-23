@@ -235,7 +235,7 @@ jni_example_input_parameters_checker_util_EXIT1:
       }
 
       p=(const char *)va_arg(args, const char *);
-      JNI_EXAMPLE_UTIL_EXCEPTION(p, err=(int)va_arg(args, int));
+      JNI_EXAMPLE_UTIL_EXCEPTION(p, (err=(int)va_arg(args, int))?err:-1);
       break;
    }
    va_end(args);
