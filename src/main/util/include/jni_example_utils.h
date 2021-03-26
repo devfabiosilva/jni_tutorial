@@ -220,6 +220,13 @@ int jni_example_create_new_object(
    const char *
 );
 
+int jni_example_get_integer_value(
+   jint *,
+   JNIEnv *,
+   jobject,
+   const char *
+);
+
 /**
  * @fn int jni_example_set_value(
  *         jclass destClass,

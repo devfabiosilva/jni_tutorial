@@ -205,6 +205,35 @@ int jni_example_set_value(
    return err;
 }
 
+int jni_example_get_integer_value(
+   jint *c_int_value,
+   JNIEnv *env,
+   jobject javaIntegerValue,
+   const char *function_name
+)
+{
+   int err;
+   jclass javaIntegerClass;
+   jmethodID jniMethodId;
+
+   if (!(javaIntegerClass=(*env)->FindClass(env, JNI_EXAMPLE_JAVA_LANG_INTEGER))) {
+      sprintf(str_message, "jni_example_get_integer_value @ %s. Can't find \""JNI_EXAMPLE_JAVA_LANG_INTEGER"\" class. Error = %d", function_name, err=950);
+      return err;
+   }
+
+   if (!(jniMethodId=(*env)->GetMethodID(env, javaIntegerClass, "intValue", "()I"))) {
+      sprintf(str_message, "jni_example_get_integer_value @ %s. Can't get Integer value method id. Error = %d", function_name, err=951);
+      return err;
+   }
+
+   *c_int_value=(*env)->CallIntMethod(env, javaIntegerValue, jniMethodId);
+   err=0;
+   if ((*env)->ExceptionCheck(env))
+      sprintf(str_message, "jni_example_get_integer_value @ %s. Can not get Integer value. Error = %d", function_name, err=952);
+
+   return err;
+}
+
 int jni_example_input_parameters_checker_util(
    JNIEnv *env,
    const char *parms,

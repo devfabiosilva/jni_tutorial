@@ -251,7 +251,7 @@ Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy_EXIT2:
 Java_org_jni_example_Main_nativeRandomNumberGeneratorNoEntropy_EXIT1:
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
       (*env)->DeleteLocalRef(env, outByteArray);
-      outByteArray=NULL;
+      return NULL;
    }
 
    return outByteArray;
@@ -289,6 +289,7 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
    jobject result, javaLongObject;
    jclass jniClass;
    jmethodID jniMethodId;
+   jint c_int_value;
    unsigned long long int random_system_id;
    const char *p;
 
@@ -306,6 +307,24 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
          (int)((*env)->GetStringUTFLength(env, name)==0), CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"name\" field can not be an empty string", 701,
          (int)((*env)->GetStringUTFLength(env, occupation)==0), CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"occupation\" field can not be an empty string", 704
       )) return NULL;
+
+   if ((err=jni_example_get_integer_value(&c_int_value, env, age, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME))) {
+        JNI_EXAMPLE_UTIL_EXCEPTION(str_message, err);
+        return NULL;
+   }
+
+   if (c_int_value<0) {
+      err=705;
+      p=CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": \"age\" cannot have negative value";
+   } else if (c_int_value<18) {
+      err=706;
+      p=CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": Candidate with \"age\" = must be 18+";
+   }
+
+   if (err) {
+      JNI_EXAMPLE_UTIL_EXCEPTION(p, err);
+      return NULL;
+   }
 
    if ((p=random_longint(&random_system_id))) {
       sprintf(str_message, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": Can't open system ramdom number generator \"%s\".", p);
