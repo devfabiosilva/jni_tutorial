@@ -6,9 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="0d2be27f-a758-458d-9ce0-0b69383583f2" name="Default Changelist" comment="Committing final">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/util/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/c_src/jni_example_utils.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/util/include/jni_example_utils.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/org/jni/example/MainTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +26,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="1p5rC4Egy7zKYlKRSbJvxatDQal" />
   <component name="ProjectLevelVcsManager">
@@ -58,7 +67,7 @@
       <recent name="org.jni.example" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MainTest">
+  <component name="RunManager" selected="JUnit.MainTest.createNewExampleRegistryTest">
     <configuration name="MainTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
@@ -74,7 +83,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.Playground" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.createNewExampleRegistryOccupationInvalidAge_Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
         <pattern>
@@ -84,13 +93,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.jni.example" />
       <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
-      <option name="METHOD_NAME" value="Playground" />
+      <option name="METHOD_NAME" value="createNewExampleRegistryOccupationInvalidAge_Test" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MainTest.helloGuestTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MainTest.createNewExampleRegistryTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="jniexample" />
       <extension name="coverage">
         <pattern>
@@ -100,7 +109,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="org.jni.example" />
       <option name="MAIN_CLASS_NAME" value="org.jni.example.MainTest" />
-      <option name="METHOD_NAME" value="helloGuestTest" />
+      <option name="METHOD_NAME" value="createNewExampleRegistryTest" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -130,11 +139,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MainTest.createNewExampleRegistryTest" />
         <item itemvalue="JUnit.MainTest" />
+        <item itemvalue="JUnit.MainTest.createNewExampleRegistryOccupationInvalidAge_Test" />
         <item itemvalue="Makefile.all" />
         <item itemvalue="JUnit.MainTest.systemRandomTest" />
-        <item itemvalue="JUnit.MainTest.Playground" />
-        <item itemvalue="JUnit.MainTest.helloGuestTest" />
       </list>
     </recent_temporary>
   </component>

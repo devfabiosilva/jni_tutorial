@@ -194,16 +194,42 @@ class MainTest {
         Assertions.assertNull(byteArray);
     }
 
-    @Test
-    void createNewExampleRegistryTest() throws Throwable {
+    HashMap<Integer, JniExampleRegistry> loadCandidates() throws Throwable {
         HashMap<Integer, JniExampleRegistry> exampleRegistryHashMap = new HashMap<>();
 
-        exampleRegistryHashMap.put(0, createNewExampleRegistry("Alice", 20, "Student"));
-        exampleRegistryHashMap.put(1, createNewExampleRegistry("Bob", 34, "Engineer"));
-        exampleRegistryHashMap.put(2, createNewExampleRegistry("Albert Einstein", 76, "Physicist"));
-        exampleRegistryHashMap.put(3, createNewExampleRegistry("Nikola Tesla", 86, "Electrical Engineer"));
+        exampleRegistryHashMap.put(0, createNewExampleRegistry("Albert Einstein", 76, "Physicist and Nobel prize"));
+        exampleRegistryHashMap.put(1, createNewExampleRegistry("Nikola Tesla", 86, "Electrical Engineer"));
+        exampleRegistryHashMap.put(2, createNewExampleRegistry("Dennis Richie", 70, "Bell Labs employee and creator of the God Language C and Unix system"));
+        exampleRegistryHashMap.put(3, createNewExampleRegistry("Federico Faggin", 79, "Physicist and Engineer and creator of the first microprocessor"));
+        exampleRegistryHashMap.put(4, createNewExampleRegistry("Marie Curie", 66, "Chemist and Nobel prize"));
+        exampleRegistryHashMap.put(5, createNewExampleRegistry("Roberto Landell de Moura", 67, "Priest and Inventor. The first one to transmit human voice over electromagnetic wave"));
+        exampleRegistryHashMap.put(6, createNewExampleRegistry("Rudolf Diesel", 55, "Engineer and inventor of the Diesel engine"));
+        exampleRegistryHashMap.put(7, createNewExampleRegistry("James Clerk Maxwell", 48, "Physicist"));
+        exampleRegistryHashMap.put(8, createNewExampleRegistry("Michael Faraday", 75, "Physicist"));
+        exampleRegistryHashMap.put(9, createNewExampleRegistry("Daniel Fraga", 40, "Crypto anarchist, activist and computer science"));
+        exampleRegistryHashMap.put(10, createNewExampleRegistry("Julian Assange", 49, "Wikileaks reporter and activist"));
+        exampleRegistryHashMap.put(11, createNewExampleRegistry("Ghoncheh Ghavami", 32, "Iranian woman fighting for humans rights and activist"));
+        exampleRegistryHashMap.put(12, createNewExampleRegistry("Alberto Santos-Dumont", 59, "Inventor and aviation pioneer"));
+        exampleRegistryHashMap.put(13, createNewExampleRegistry("Andreas Vesalius", 49, "The father of the human body anatomy studies. See 'De humani corporis fabrica - 1543'"));
+        exampleRegistryHashMap.put(14, createNewExampleRegistry("Sir Isaac Newton", 84, "Physicist"));
+        exampleRegistryHashMap.put(15, createNewExampleRegistry("Gottfried Wilhelm Leibniz", 70, "Mathematician and philosopher"));
+        exampleRegistryHashMap.put(16, createNewExampleRegistry("Carl Friedrich Gauss", 77, "Mathematician and philosopher"));
+        exampleRegistryHashMap.put(17, createNewExampleRegistry("Hans Camenzind", 78, "Inventor of the IC 555 and Engineer"));
+        exampleRegistryHashMap.put(18, createNewExampleRegistry("Paul Brokaw", 84, "Integrated Circuit expert and Inventor of the band gap reference voltage regulator"));
+        exampleRegistryHashMap.put(19, createNewExampleRegistry("Thomas Sowell", 90, "Economist"));
+        exampleRegistryHashMap.put(20, createNewExampleRegistry("Satoshi Nakamoto", 50, "Creator of the Bitcoin (first decentralized cryptocurrency immune to dictatorships, central banks, stupid laws, inflation and regulations)"));
+        exampleRegistryHashMap.put(21, createNewExampleRegistry("Ayn Rand", 77, "Philosopher"));
+        exampleRegistryHashMap.put(22, createNewExampleRegistry("Oskar Schindler", 66, "German industrialist who is credited with saving the lives of 1,200 Jews during the Holocaust"));
+        exampleRegistryHashMap.put(23, createNewExampleRegistry("Satoshi Nakamoto", 50, "Creator of the Bitcoin (first decentralized cryptocurrency immune to dictatorships, central banks, stupid laws, inflation and regulations)"));
+        exampleRegistryHashMap.put(24, createNewExampleRegistry("Ayn Rand", 77, "Philosopher"));
 
-        exampleRegistryHashMap.forEach((k, v) -> {
+        return exampleRegistryHashMap;
+    }
+
+    @Test
+    void createNewExampleRegistryTest() throws Throwable {
+
+        loadCandidates().forEach((k, v) -> {
             System.out.println("Testing k = " + k);
             Assertions.assertNotNull(v);
             Assertions.assertNotNull(v.getId());
@@ -214,7 +240,7 @@ class MainTest {
             System.out.println("Generated long random ID = " + v.getId());
             System.out.println("Name = " + v.getName());
             System.out.println("Age = " + v.getAge());
-            System.out.println("Occupation " + v.getOccupation());
+            System.out.println("Occupation = " + v.getOccupation());
             System.out.println("-------------------------------\n");
         });
 
@@ -305,6 +331,39 @@ class MainTest {
                     e.getMessage()
             );
         }
+        Assertions.assertNull(jniExampleRegistry);
+    }
+
+    @Test
+    void createNewExampleRegistryOccupationInvalidAge_Test() throws Throwable {
+        final String name = "Dennis Richie";
+        final String occupation = "Bell Labs computer engineer";
+
+        JniExampleRegistry jniExampleRegistry = null;
+        try {
+            jniExampleRegistry = createNewExampleRegistry(name, -20, occupation);
+            Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"age\" has negative value");
+        } catch (Throwable e) {
+            if (e instanceof AssertionError)
+                throw e;
+
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(705, ((JniExampleException) e).getError());
+            Assertions.assertEquals("createNewExampleRegistry: \"age\" cannot have negative value", e.getMessage());
+        }
+
+        try {
+            jniExampleRegistry = createNewExampleRegistry(name, 10, occupation);
+            Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"age\" is less than 18");
+        } catch (Throwable e) {
+            if (e instanceof AssertionError)
+                throw e;
+
+            Assertions.assertTrue(e instanceof JniExampleException);
+            Assertions.assertEquals(706, ((JniExampleException) e).getError());
+            Assertions.assertEquals("createNewExampleRegistry: Candidate with \"age\" = must be 18+", e.getMessage());
+        }
+
         Assertions.assertNull(jniExampleRegistry);
     }
 
