@@ -194,43 +194,12 @@ class MainTest {
         Assertions.assertNull(byteArray);
     }
 
-    HashMap<Integer, JniExampleRegistry> loadCandidates() throws Throwable {
-        HashMap<Integer, JniExampleRegistry> exampleRegistryHashMap = new HashMap<>();
-
-        exampleRegistryHashMap.put(0, createNewExampleRegistry("Albert Einstein", 76, "Physicist and Nobel prize"));
-        exampleRegistryHashMap.put(1, createNewExampleRegistry("Nikola Tesla", 86, "Electrical Engineer"));
-        exampleRegistryHashMap.put(2, createNewExampleRegistry("Dennis Richie", 70, "Bell Labs employee and creator of the God Language C and Unix system"));
-        exampleRegistryHashMap.put(3, createNewExampleRegistry("Federico Faggin", 79, "Physicist and Engineer and creator of the first microprocessor"));
-        exampleRegistryHashMap.put(4, createNewExampleRegistry("Marie Curie", 66, "Chemist and Nobel prize"));
-        exampleRegistryHashMap.put(5, createNewExampleRegistry("Roberto Landell de Moura", 67, "Priest and Inventor. The first one to transmit human voice over electromagnetic wave"));
-        exampleRegistryHashMap.put(6, createNewExampleRegistry("Rudolf Diesel", 55, "Engineer and inventor of the Diesel engine"));
-        exampleRegistryHashMap.put(7, createNewExampleRegistry("James Clerk Maxwell", 48, "Physicist"));
-        exampleRegistryHashMap.put(8, createNewExampleRegistry("Michael Faraday", 75, "Physicist"));
-        exampleRegistryHashMap.put(9, createNewExampleRegistry("Daniel Fraga", 40, "Crypto anarchist, activist and computer science"));
-        exampleRegistryHashMap.put(10, createNewExampleRegistry("Julian Assange", 49, "Wikileaks reporter and activist"));
-        exampleRegistryHashMap.put(11, createNewExampleRegistry("Ghoncheh Ghavami", 32, "Iranian woman fighting for humans rights and activist"));
-        exampleRegistryHashMap.put(12, createNewExampleRegistry("Alberto Santos-Dumont", 59, "Inventor and aviation pioneer"));
-        exampleRegistryHashMap.put(13, createNewExampleRegistry("Andreas Vesalius", 49, "The father of the human body anatomy studies. See 'De humani corporis fabrica - 1543'"));
-        exampleRegistryHashMap.put(14, createNewExampleRegistry("Sir Isaac Newton", 84, "Physicist"));
-        exampleRegistryHashMap.put(15, createNewExampleRegistry("Gottfried Wilhelm Leibniz", 70, "Mathematician and philosopher"));
-        exampleRegistryHashMap.put(16, createNewExampleRegistry("Carl Friedrich Gauss", 77, "Mathematician and philosopher"));
-        exampleRegistryHashMap.put(17, createNewExampleRegistry("Hans Camenzind", 78, "Inventor of the IC 555 and Engineer"));
-        exampleRegistryHashMap.put(18, createNewExampleRegistry("Paul Brokaw", 84, "Integrated Circuit expert and Inventor of the band gap reference voltage regulator"));
-        exampleRegistryHashMap.put(19, createNewExampleRegistry("Thomas Sowell", 90, "Economist"));
-        exampleRegistryHashMap.put(20, createNewExampleRegistry("Satoshi Nakamoto", 50, "Creator of the Bitcoin (first decentralized cryptocurrency immune to dictatorships, central banks, stupid laws, inflation and regulations)"));
-        exampleRegistryHashMap.put(21, createNewExampleRegistry("Ayn Rand", 77, "Philosopher"));
-        exampleRegistryHashMap.put(22, createNewExampleRegistry("Oskar Schindler", 66, "German industrialist who is credited with saving the lives of 1,200 Jews during the Holocaust"));
-        exampleRegistryHashMap.put(23, createNewExampleRegistry("Satoshi Nakamoto", 50, "Creator of the Bitcoin (first decentralized cryptocurrency immune to dictatorships, central banks, stupid laws, inflation and regulations)"));
-        exampleRegistryHashMap.put(24, createNewExampleRegistry("Ayn Rand", 77, "Philosopher"));
-
-        return exampleRegistryHashMap;
-    }
-
     @Test
     void createNewExampleRegistryTest() throws Throwable {
+        HashMap<Integer, JniExampleRegistry> candidates = loadCandidates();
 
-        loadCandidates().forEach((k, v) -> {
-            System.out.println("Testing k = " + k);
+        candidates.forEach((k, v) -> {
+            System.out.println("Testing candidate index (" + k + ")");
             Assertions.assertNotNull(v);
             Assertions.assertNotNull(v.getId());
             Assertions.assertNotNull(v.getName());
@@ -243,6 +212,8 @@ class MainTest {
             System.out.println("Occupation = " + v.getOccupation());
             System.out.println("-------------------------------\n");
         });
+
+        System.out.println("Total candidates: " + candidates.size());
 
     }
 
@@ -405,5 +376,164 @@ class MainTest {
         }
 
         Assertions.assertNull(rand);
+    }
+
+    HashMap<Integer, JniExampleRegistry>
+    loadCandidates() throws Throwable {
+        HashMap<Integer, JniExampleRegistry> exampleRegistryHashMap = new HashMap<>();
+        Integer i = 0;
+
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Albert Einstein",
+                        76,
+                        "Physicist and Nobel prize"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Nikola Tesla",
+                        86,
+                        "Electrical Engineer"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Dennis Richie",
+                        70,
+                        "Bell Labs employee and creator of the God Language C and Unix system"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Federico Faggin",
+                        79,
+                        "Physicist and Engineer and creator of the first microprocessor"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Marie Curie",
+                        66,
+                        "Chemist and Nobel prize"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Roberto Landell de Moura",
+                        67,
+                        "Priest and Inventor. The first one to transmit human voice over electromagnetic wave"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Rudolf Diesel",
+                        55,
+                        "Engineer and inventor of the Diesel engine"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "James Clerk Maxwell",
+                        48,
+                        "Physicist"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Michael Faraday",
+                        75,
+                        "Physicist"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Daniel Fraga",
+                        40,
+                        "Crypto anarchist, activist and computer science"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Julian Assange",
+                        49,
+                        "Wikileaks reporter and activist"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Ghoncheh Ghavami",
+                        32,
+                        "Iranian woman fighting for humans rights and activist"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Alberto Santos-Dumont",
+                        59,
+                        "Inventor and aviation pioneer"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Andreas Vesalius",
+                        49,
+                        "Father of the human body anatomy studies. See 'De humani corporis fabrica - 1543'"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Sir Isaac Newton",
+                        84,
+                        "Physicist"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Gottfried Wilhelm Leibniz",
+                        70,
+                        "Mathematician and philosopher"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Carl Friedrich Gauss",
+                        77,
+                        "Mathematician and philosopher"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Hans Camenzind",
+                        78,
+                        "Inventor of the IC 555 and Engineer"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Paul Brokaw",
+                        84,
+                        "Integrated Circuit expert and Inventor of the band gap reference voltage regulator"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Thomas Sowell",
+                        90,
+                        "Economist"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Satoshi Nakamoto",
+                        50,
+                        "Creator of the Bitcoin (first decentralized cryptocurrency immune to dictatorships, central banks, stupid laws, inflation and regulations)"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Ayn Rand",
+                        77,
+                        "Philosopher"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Oskar Schindler",
+                        66,
+                        "German industrialist who is credited with saving the lives of 1,200 Jews during the Holocaust"
+                ));
+        exampleRegistryHashMap.put(
+                i++, createNewExampleRegistry(
+                        "Irena Sendler",
+                        98,
+                        "Mother of the children of the Holocaust, saving 2,500 children"
+                ));
+        exampleRegistryHashMap.put(
+                i, createNewExampleRegistry(
+                        "Fréderic Bastiat",
+                        49,
+                        "French economist"
+                ));
+
+        return exampleRegistryHashMap;
     }
 }

@@ -220,6 +220,23 @@ int jni_example_create_new_object(
    const char *
 );
 
+/**
+ * @fn int jni_example_get_integer_value(
+ *         jint *c_int_value,
+ *         JNIEnv *env,
+ *         jobject javaIntegerValue,
+ *         const char *function_name
+ *      )
+ *
+ * @brief Get Java Integer value and parses to C
+ *
+ * @param [out] c_int_value Pointer to be parsed Java Integer value.
+ * @param [in] env Java environment
+ * @param [in] javaIntegerValue Java Integer value.
+ * @param [in] function_name Parent function name
+ *
+ * @retval 0 if success otherwise error if non zero
+ */
 int jni_example_get_integer_value(
    jint *,
    JNIEnv *,
@@ -316,7 +333,9 @@ int jni_example_set_value(
  *    const char VALIDATOR[] = {PARM_CHECKER_IS_JSTRING, PARM_CHECKER_IS_TRUE, PARM_CHECKER_END};
  *    jbyteArray out = NULL;
  *
- *    if (jni_example_input_parameters_checker_util(env, VALIDATOR, name, "Name cannot be empty", 1234, (int)(age <= 0), "Age cannot be 0 or negative", 4567))
+ *    if (jni_example_input_parameters_checker_util(env, VALIDATOR,
+ *          name, "Name cannot be empty", 1234,
+ *          (int)(age <= 0), "Age cannot be 0 or negative", 4567))
  *       return NULL;
  *    ...
  * ```

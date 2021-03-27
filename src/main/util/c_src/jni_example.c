@@ -327,7 +327,7 @@ JNIEXPORT jobject JNICALL Java_org_jni_example_Main_createNewExampleRegistry(
    }
 
    if ((p=random_longint(&random_system_id))) {
-      sprintf(str_message, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": Can't open system ramdom number generator \"%s\".", p);
+      sprintf(str_message, CREATE_NEW_EXAMPLE_REGISTRY_FUNCTION_NAME": Can't open system random number generator \"%s\".", p);
       JNI_EXAMPLE_UTIL_EXCEPTION(str_message, 705);
       return NULL;
    }
@@ -374,6 +374,5 @@ Java_org_jni_example_Main_createNewExampleRegistry_EXIT1:
    }
 
    return result;
-
 }
 
