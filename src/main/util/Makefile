@@ -14,6 +14,8 @@ FOREIGN_LIBRARY=foreign_library
 C_SRC=$(PWD)/c_src
 JNI_EXAMPLE_SUFFIX=-I$(INCLUDEDIR) -I$(JAVAINCLUDE) -I$(JAVAINCLUDE_LINUX)
 PLATFORM?=UNIX
+CTEST_DIR=$(CURDIR)/ctests
+CTEST=./test
 
 all: main
 
@@ -45,6 +47,12 @@ main: lib$(FOREIGN_LIBRARY).so $(JNI_EXAMPLE_UTILS).o $(MAINFILE).o
 	@chmod -x lib$(LIBNAME).so
 	@echo "Finished"
 
+test: main
+	@echo "Compiling test code ..."
+	@$(CC) -O2 -o $(CTEST_DIR)/test $(CTEST_DIR)/test.c $(C_SRC)/asserts.c $(C_SRC)/foreign_library.c -I$(INCLUDEDIR) -Wall
+	@echo "Entering test ..."
+	@($(CTEST_DIR)/$(CTEST))
+
 .PHONY: clean
 clean:
 	@echo "Cleaning $(FOREIGN_LIBRARY).o object ..."
@@ -57,3 +65,7 @@ clean:
 	rm lib$(LIBNAME).so
 	@echo "Cleaning lib$(FOREIGN_LIBRARY).so library..."
 	rm lib$(FOREIGN_LIBRARY).so
+ifneq ("$(wildcard $(CTEST_DIR)/test)","")
+	@echo "Removing $(CTEST_DIR)/test ..."
+	rm $(CTEST_DIR)/test
+endif
