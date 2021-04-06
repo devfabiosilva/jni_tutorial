@@ -1,10 +1,10 @@
 package org.jni.example.registry;
 // Don't modify this class. It is used by Native JNI library
 public class JniExampleRegistry {
-    private Long id = null;
-    private String name = null;
-    private Integer age = null;
-    private String occupation = null;
+    final private Long id = null;
+    final private String name = null;
+    final private Integer age = null;
+    final private String occupation = null;
 
     private JniExampleRegistry() {}
 

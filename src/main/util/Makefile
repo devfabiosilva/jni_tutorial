@@ -16,6 +16,8 @@ JNI_EXAMPLE_SUFFIX=-I$(INCLUDEDIR) -I$(JAVAINCLUDE) -I$(JAVAINCLUDE_LINUX)
 PLATFORM?=UNIX
 CTEST_DIR=$(CURDIR)/ctests
 CTEST=./test
+LD_LIBRARY_PATH=$PATH:$(pwd)
+export
 
 all: main
 
@@ -49,9 +51,9 @@ main: lib$(FOREIGN_LIBRARY).so $(JNI_EXAMPLE_UTILS).o $(MAINFILE).o
 
 test: main
 	@echo "Compiling test code ..."
-	@$(CC) -O2 -o $(CTEST_DIR)/test $(CTEST_DIR)/test.c $(C_SRC)/asserts.c $(C_SRC)/foreign_library.c -I$(INCLUDEDIR) -Wall
-	@echo "Entering test ..."
-	@($(CTEST_DIR)/$(CTEST))
+	@$(CC) -O2 -o $(CURDIR)/test $(CTEST_DIR)/test.c $(C_SRC)/asserts.c -L$(CURDIR) -l$(FOREIGN_LIBRARY) -I$(INCLUDEDIR) -Wall
+	@echo "Testing lib$(FOREIGN_LIBRARY).so library ..."
+	@($(CURDIR)/$(CTEST))
 
 .PHONY: clean
 clean:
@@ -65,7 +67,7 @@ clean:
 	rm lib$(LIBNAME).so
 	@echo "Cleaning lib$(FOREIGN_LIBRARY).so library..."
 	rm lib$(FOREIGN_LIBRARY).so
-ifneq ("$(wildcard $(CTEST_DIR)/test)","")
+ifneq ("$(wildcard $(CURDIR)/test)","")
 	@echo "Removing $(CTEST_DIR)/test ..."
-	rm $(CTEST_DIR)/test
+	rm $(CURDIR)/test
 endif

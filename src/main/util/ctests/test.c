@@ -14,7 +14,7 @@ int main(int argc, char **argv)
 {
    int err;
    char *msg=NULL;
-   double a, *division_result;
+   double a, delta=1e-15, *division_result;
    unsigned long long int random1, random2;
    uint8_t rnd1[64], rnd2[64];
 
@@ -25,18 +25,18 @@ int main(int argc, char **argv)
        "Testing welcome() message is correct ok"
    );
 
-   assert_equal_double(2.3, add_two_numbers(1.0, 1.3), "Error: Adding two numbers", "Adding two numbers ok");
+   assert_equal_double(2.3, add_two_numbers(1.0, 1.3), delta, "Error: Adding two numbers", "Adding two numbers ok");
 
-   assert_equal_double(/*2.*/ 2.3-.3, sub_two_numbers(2.3, 0.3), "Error: Subtract two numbers", "Subtract two numbers ok");
+   assert_equal_double(2., sub_two_numbers(2.3, 0.3), delta, "Error: Subtract two numbers", "Subtract two numbers ok");
 
-   assert_equal_double(2.2, mult_two_numbers(1.1, 2.0), "Error: Multiply two numbers", "Multiply two numbers ok");
+   assert_equal_double(2.2, mult_two_numbers(1.1, 2.0), delta, "Error: Multiply two numbers", "Multiply two numbers ok");
 
    a=8.4;
    division_result=div_two_numbers(&a, 2);
 
    assert_not_null(division_result, NULL, NULL, "\"division_result\" is NULL", "\"division_result\" ok");
 
-   assert_equal_double(4.2, *division_result, "Error: Divide two numbers", "Divide two numbers ok");
+   assert_equal_double(4.2, *division_result, delta, "Error: Divide two numbers", "Divide two numbers ok");
 
    a=10.;
    division_result=div_two_numbers(&a, 0);
