@@ -3,20 +3,28 @@
 #include <foreign_library.h>
 #include <stdint.h>
 
+char *msg=NULL;
+
 #define EXPECTED_HELLO_GUEST_MESSAGE "Hello GUEST this is a JNI example test. Have a nice day ;)"
-void free_on_error(void *ctx)
+
+void abort_fn(void *ctx)
 {
-   printf("\nError when compare result string. Expected \""EXPECTED_HELLO_GUEST_MESSAGE"\" but returned %s\n", (const char *)ctx);
-   free(ctx);
+   printf("\nAborting. Receiving context pointer (%p) ...\n", ctx);
+   printf("\nChecking pointer %p ...", (void *)msg);
+   if (msg) {
+      printf("\nFreeing msg ...\n");
+      free(msg);
+   }
 }
 
 int main(int argc, char **argv)
 {
    int err;
-   char *msg=NULL;
    double a, delta=1e-15, *division_result;
    unsigned long long int random1, random2;
    uint8_t rnd1[64], rnd2[64];
+
+   on_abort(abort_fn);
 
    assert_equal_string(
       "Welcome. This is a JNI example. I hope you enjoy this tutorial",
@@ -96,18 +104,13 @@ int main(int argc, char **argv)
 
    assert_not_null(msg, NULL, NULL, "\"msg\" returned NULL. It should be NON NULL.", "\"msg\" is NOT NULL (OK)");
 
-   assert_equal_byte(
-      (void *)EXPECTED_HELLO_GUEST_MESSAGE,
-      (void *)msg,
-      (size_t)err,
-      free_on_error,
-      (void *)msg,
+   assert_equal_string(
+      EXPECTED_HELLO_GUEST_MESSAGE,
+      msg,
       "\"msg\" string contains wrong string expected in \"hello_guest_dynamic()\".",
       "\"hello_guest_dynamic()\" returned string \""EXPECTED_HELLO_GUEST_MESSAGE"\""
    );
 
-   begin_tests();
-   end_tests();
    free(msg);
    return 0;
 }

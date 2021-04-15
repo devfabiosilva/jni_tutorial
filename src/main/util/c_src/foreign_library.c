@@ -5,7 +5,15 @@
 
 inline const char *welcome() { return WELCOME_MSG; }
 
-inline int hello_guest_dynamic(char **ret_msg, const char *guest) { return asprintf(ret_msg, HELLO_GUEST_MSG, guest); }
+inline int hello_guest_dynamic(char **ret_msg, const char *guest)
+{
+   int err;
+
+   if ((err=asprintf(ret_msg, HELLO_GUEST_MSG, guest))<0)
+      *ret_msg=NULL;
+
+   return err;
+}
 
 inline double add_two_numbers(double a, double b) { return a+b; }
 
