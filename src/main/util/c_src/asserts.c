@@ -22,10 +22,13 @@ static void print_assert_not_equal_string_ignore_case(void *);
 static void print_assert_nullable(void *ctx);
 
 static void abort_tests();
-
 /*
 static void debug_hex_dump(unsigned char *data, size_t data_size)
 {
+   if (!data) {
+      printf("\nWARNING: NULL pointer. Aborting\n");
+      return;
+   }
    if (!data_size)
       return;
 
@@ -38,6 +41,7 @@ static void debug_hex_dump(unsigned char *data, size_t data_size)
 #define ERROR_CODE "\e[31;1m"
 #define SUCCESS_CODE "\e[32;1m"
 #define WARNING_CODE "\e[33;1m"
+#define INFO_CODE "\e[34;1m"
 
 #define C_TEST_TRUE (int)(1==1)
 #define C_TEST_FALSE (int)(1!=1)
@@ -151,14 +155,8 @@ typedef struct c_test_type_nullable_t {
    free_on_error_cb;
 } C_TEST_TYPE_NULLABLE;
 
-#define C_TEST_VARGS_TITLE (uint32_t)(0x002E4992)
-#define C_TEST_VARGS_INFO (uint32_t)(0x012E4992)
-#define C_TEST_VARGS_WARNING (uint32_t)(0x022E4992)
-#define C_TEST_VARGS_ERROR (uint32_t)(0x032E4992)
-#define C_TEST_VARGS_SUCCESS (uint32_t)(0x042E4992)
 #define C_TEST_VARGS_SETTER (uint32_t)(0x043E4992)
 #define C_TEST_VARGS_SETTER_CHK_SUM (uint32_t)(0x1bc1eeb8)
-//1bc1eeb82c6d13f903c7c176c23ae85208d67e5a295accad8f371310e35043bc
 
 const uint32_t C_TEST_VARGS_MSG_SIGS[] = {
    C_TEST_VARGS_TITLE, C_TEST_VARGS_INFO, C_TEST_VARGS_WARNING,
@@ -166,6 +164,18 @@ const uint32_t C_TEST_VARGS_MSG_SIGS[] = {
 };
 
 #define C_TEST_VARGS_MSG_SIGS_SIZE (sizeof(C_TEST_VARGS_MSG_SIGS)/sizeof(uint32_t))
+
+typedef struct c_test_vargs_msg_t {
+   uint32_t sig;
+   int msg_sz;
+   char *msg;
+} C_TEST_VARGS_MSG;
+
+typedef struct c_test_vargs_msg_header_t {
+   uint32_t sig;
+   uint32_t sig_chk;
+   C_TEST_VARGS_MSG *vargs_msgs[C_TEST_VARGS_MSG_SIGS_SIZE+1];
+} C_TEST_VARGS_MSG_HEADER;
 
 #define ASSERT_EQ_INT_FN "assert_equal_int"
 #define ASSERT_TRUE_FN "assert_true"
@@ -289,10 +299,13 @@ static void write_title_fmt(const char *template, const char *fmt, ...)
 #define ERROR_MSG(msg) write_title(msg, ERROR_CODE);
 #define SUCCESS_MSG(msg) write_title(msg, SUCCESS_CODE);
 #define WARN_MSG(msg) write_title(msg, WARNING_CODE);
+#define INFO_MSG(msg) write_title(msg, INFO_CODE);
 
 #define TITLE_MSG_FMT(...) write_title_fmt(INITIAL_TITLE, __VA_ARGS__);
 #define ERROR_MSG_FMT(...) write_title_fmt(ERROR_CODE, __VA_ARGS__);
 #define WARN_MSG_FMT(...) write_title_fmt(WARNING_CODE, __VA_ARGS__);
+#define INFO_MSG_FMT(...) write_title_fmt(INFO_CODE, __VA_ARGS__);
+#define SUCCESS_MSG_FMT(...) write_title_fmt(SUCCESS_CODE, __VA_ARGS__);
 
 static void end_tests_util(int abort)
 {
@@ -632,7 +645,8 @@ void rm_abort()
    #undef p
 }
 //
-#define C_VARGS_SZ (C_TEST_VARGS_MSG_SIGS_SIZE)*sizeof(C_TEST_VARGS_MSG *)+sizeof(C_TEST_VARGS_MSG_HEADER)
+
+#define C_VARGS_SZ sizeof(C_TEST_VARGS_MSG_HEADER)
 static inline int c_test_is_header_invalid(C_TEST_VARGS_MSG_HEADER *header)
 {
    return ((header->sig^C_TEST_VARGS_SETTER)|(header->sig_chk^C_TEST_VARGS_SETTER_CHK_SUM));
@@ -647,10 +661,8 @@ static C_TEST_VARGS_MSG_HEADER *c_test_vargs_create()
 
    ((C_TEST_VARGS_MSG_HEADER *)c_vargs)->sig=C_TEST_VARGS_SETTER;
    ((C_TEST_VARGS_MSG_HEADER *)c_vargs)->sig_chk=C_TEST_VARGS_SETTER_CHK_SUM;
-
-   memset(*((C_TEST_VARGS_MSG_HEADER *)c_vargs)->vargs_msgs, 0, C_TEST_VARGS_MSG_SIGS_SIZE+1);
+   memset(((C_TEST_VARGS_MSG_HEADER *)c_vargs)->vargs_msgs, 0, sizeof(C_TEST_VARGS_MSG *)*(C_TEST_VARGS_MSG_SIGS_SIZE+1));
    return (C_TEST_VARGS_MSG_HEADER *)c_vargs;
-
 }
 
 static C_TEST_VARGS_MSG *check_vargs_sigmsg_exists(C_TEST_VARGS_MSG **test_vargs_msg, uint32_t sig)
@@ -659,10 +671,9 @@ static C_TEST_VARGS_MSG *check_vargs_sigmsg_exists(C_TEST_VARGS_MSG **test_vargs
 
    p=test_vargs_msg;
 
-   do {
+   for (;(*p);p++)
       if ((*p)->sig==sig)
          return (*p);
-   } while (++(*p));
 
    return NULL;
 }
@@ -678,13 +689,18 @@ static uint32_t check_msgsig(C_TEST_VARGS_MSG *va_msg)
    return 0;
 }
 
-static int free_vargs(C_TEST_VARGS_MSG_HEADER *vargs)
+static int free_vargs(void *vargs)
 {
-   int err=0;
+   int err;
+   C_TEST_VARGS_MSG **p;
 
-   C_TEST_VARGS_MSG **p=vargs->vargs_msgs;
+   if (!vargs)
+      return 0;
 
-   do {
+   err=0;
+   p=&((C_TEST_VARGS_MSG_HEADER *)vargs)->vargs_msgs[0];
+
+   while (*p) {
       if (!check_msgsig(*p)) {
          err=7;
          ERROR_MSG("ERROR: check_msgsig(). Missing or invalid message signature. Maybe wrong parameters. Ignoring free argument")
@@ -697,26 +713,28 @@ static int free_vargs(C_TEST_VARGS_MSG_HEADER *vargs)
       } else
          ERROR_MSG_FMT("ERROR %d: free_vargs(). Error dealloc message. Signature = %04x at address = (%p)", (err=(*p)->msg_sz), (*p)->sig, (*p))
 
-      free(*p);
-   } while (++(*p));
+      free(*(p++));
+   }
 
    free(memset(vargs, 0, C_VARGS_SZ));
 
    return err;
 }
 
+#define CLOSE_VARG_ERR_NULL (int)8
+#define CLOSE_VARG_ERR_WRONG_SIG (int)9
 static int close_varg(C_TEST_VARGS_MSG *varg)
 {
    int err;
 
    if (!varg) {
       WARN_MSG("WARNING: close_varg() is NULL. Ignoring closing parameter")
-      return 8;
+      return CLOSE_VARG_ERR_NULL;
    }
 
    if (!check_msgsig(varg)) {
       WARN_MSG_FMT("WARNING: check_msgsig() @ close_varg. Signature not found in address (%p). Ignoring closing", (void *)varg)
-      return 9;
+      return CLOSE_VARG_ERR_WRONG_SIG;
    }
 
    err=0;
@@ -737,7 +755,7 @@ static int close_varg(C_TEST_VARGS_MSG *varg)
    return err;
 }
 
-static C_TEST_VARGS_MSG *set_varg(uint32_t sig, const char *message, ...)
+void *set_varg(uint32_t sig, const char *message, ...)
 {
    C_TEST_VARGS_MSG *varg_tmp;
    va_list args;
@@ -750,29 +768,202 @@ static C_TEST_VARGS_MSG *set_varg(uint32_t sig, const char *message, ...)
    varg_tmp->msg_sz=vasprintf(&varg_tmp->msg, message, args);
    va_end(args);
 
-   return varg_tmp;
+   return (void *)varg_tmp;
 }
 
-C_TEST_VARGS_MSG_HEADER *vargs_setter(int initial, ...)
+#define VARG_ERROR_MSG_NULL_PARM "ERROR: CTEST_SETTER has NULL parameter at argument %d."
+#define VARG_ERROR_MSG_MANY_ARGUMENTS "ERROR: CTEST_SETTER has too many arguments"
+void *vargs_setter(int initial, ...)
 {
+   int err, argc;
+   void *v;
    va_list args, args_cpy;
+   C_TEST_VARGS_MSG_HEADER *ret;
+   C_TEST_VARGS_MSG **vargs_msgs;
 
    if (initial!=-1) {
-      WARN_MSG("WARNING: Initial value is wrong. Please consider use \"CTEST_SETTER\" instead. Ignoring parameter ...")
+      ERROR_MSG("ERROR: Initial value is wrong. Please consider use \"CTEST_SETTER\" instead. Ignoring parameter ...")
       return NULL;
    }
 
+   err=0;
+   argc=0;
+
    va_start(args, initial);
-   vprintf("\nvargs_setter %s %s %p\n", args);
+   va_copy(args_cpy, args);
+#define MAX_ARG_OVF (size_t)C_TEST_VARGS_MSG_SIGS_SIZE+2
+   while ((argc++)<MAX_ARG_OVF) {
+
+      if (argc>MAX_ARG_OVF) {
+         argc--;
+         err=-3;
+         ERROR_MSG(VARG_ERROR_MSG_MANY_ARGUMENTS)
+         break;
+      }
+
+      if ((v=(void *)va_arg(args, void *))==VA_END_SIGNATURE)
+         break;
+
+      if (!v) {
+
+         argc++;
+
+         if (argc>MAX_ARG_OVF) {
+            argc--;
+            err=-5;
+            ERROR_MSG(VARG_ERROR_MSG_MANY_ARGUMENTS)
+            break;
+         }
+
+         if ((v=(void *)va_arg(args, void *))==VA_END_SIGNATURE)
+            break;
+
+         err=-1;
+         ERROR_MSG_FMT(VARG_ERROR_MSG_NULL_PARM, argc-1)
+
+         if (v)
+            goto while_vargs_continue;
+
+         if ((MAX_ARG_OVF-2)>argc)
+            ERROR_MSG_FMT(VARG_ERROR_MSG_NULL_PARM, argc)
+
+      }
+
+while_vargs_continue:
+      if ((MAX_ARG_OVF-2)>=argc)
+         if (!check_msgsig((C_TEST_VARGS_MSG *)v)) {
+            err=-4;
+            ERROR_MSG_FMT("ERROR: Invalid message at argument %d", argc)
+         }
+   }
    va_end(args);
-   return NULL;
+
+   if (argc>2)
+      argc-=2;
+   else if (argc==2) {
+      if (!err)
+         return (C_TEST_VARGS_MSG_HEADER *)VA_END_SIGNATURE;
+
+      ERROR_MSG_FMT("ERROR %d: Invalid empty args", err);
+      return NULL;
+   } else {
+      ERROR_MSG("ERROR: vargs_setter must be initialized only with CTEST_SETTER macro.");
+      return NULL;
+   }
+
+   va_copy(args, args_cpy);
+   va_start(args, initial);
+   if (err) {
+vargs_setter_RET:
+      ERROR_MSG("Error(s) occurred. Closing arguments before quit ...");
+
+      for (initial=0;initial<argc;initial++)
+         if ((err=close_varg((C_TEST_VARGS_MSG *)(v=(void *)va_arg(args, void *))))) {
+            if (err==CLOSE_VARG_ERR_WRONG_SIG)
+               if (!c_test_is_header_invalid((C_TEST_VARGS_MSG_HEADER *)v)) {
+                  ERROR_MSG("Error: Found forbidden arguments inside argument setter. Trying to close");
+
+                  if ((err=free_vargs((C_TEST_VARGS_MSG_HEADER *)v))) ERROR_MSG_FMT("Error %d: Closing failed", err)
+                  else INFO_MSG("Closed success!");
+               }
+
+         } else
+            INFO_MSG_FMT("Closing argument %d ...", initial)
+
+      ERROR_MSG("Closed all arguments");
+      va_end(args);
+      return NULL;
+   }
+
+   if (!(ret=c_test_vargs_create())) {
+      ERROR_MSG("Fatal: Can't create vargs setter ...")
+      goto vargs_setter_EXIT1;
+   }
+
+   vargs_msgs=ret->vargs_msgs;
+
+   for (initial=0;initial<argc;initial++) {
+      if (!check_msgsig((C_TEST_VARGS_MSG *)(v=(void *)va_arg(args, void *)))) {
+         free_vargs(ret);
+
+         goto vargs_setter_EXIT1;
+      }
+
+      if (check_vargs_sigmsg_exists(ret->vargs_msgs, ((C_TEST_VARGS_MSG *)v)->sig)) {
+         ERROR_MSG("ERROR: Repeated arguments. Closing ...")
+         goto vargs_setter_EXIT1;
+      }
+
+      *(vargs_msgs++)=(C_TEST_VARGS_MSG *)v;
+
+   }
+
+   va_end(args);
+   return (void *)ret;
+
+vargs_setter_EXIT1:
+   va_end(args);
+   va_copy(args, args_cpy);
+   va_start(args, initial);
+
+   goto vargs_setter_RET;
+
+#undef MAX_ARG_OVF
 }
 
-#define CTEST_TITLE(...) set_varg(C_TEST_VARGS_TITLE, __VA_ARGS__)
-#define CTEST_INFO(...) set_varg(C_TEST_VARGS_INFO, __VA_ARGS__)
-#define CTEST_WARN(...) set_varg(C_TEST_VARGS_WARNING, __VA_ARGS__)
-#define CTEST_ON_ERROR(...) set_varg(C_TEST_VARGS_ERROR, __VA_ARGS__)
-#define CTEST_ON_SUCCESS(...) set_varg(C_TEST_VARGS_SUCCESS, __VA_ARGS__)
+#define LOAD_TEST_VARGS_ERROR_TOO_MANY_ARGS 10
+#define LOAD_TEST_VARGS_ERROR_MISSING_ARGUMENTS 11
+#define LOAD_TEST_VARGS_ERROR_LOAD_WRONG_ARGUMENT_1 12
+#define LOAD_TEST_VARGS_ERROR_LOAD_WRONG_ARGUMENT_2 13
+#define LOAD_TEST_VARGS_ERROR_IS_NULL 14
+#define LOAD_TEST_VARGS_ERROR_HEADER_INVALID 15
+#define LOAD_TEST_VARGS_END_SIGNATURE -15
+static int load_test_vargs(void **vargs, ...)
+{
+   va_list ap;
+   int i, idx;
+   void *ptr[3];
+
+#define MAX_ARG 3+1
+   *vargs=NULL;
+   va_start(ap, vargs);
+   for (i=0;i<MAX_ARG;) {
+      if (i==(MAX_ARG-1)) {
+         va_end(ap);
+         return LOAD_TEST_VARGS_ERROR_TOO_MANY_ARGS;
+      }
+      if ((ptr[i++]=(void *)va_arg(ap, void *))==VAS_END_SIGNATURE)
+         break;
+   }
+   va_end(ap);
+#undef MAX_ARG
+
+   if (i==1)
+      return LOAD_TEST_VARGS_ERROR_MISSING_ARGUMENTS;
+   else if (i==2) {
+      idx=0;
+
+load_test_vargs_RET1:
+      if (ptr[idx++]!=NULL)
+         return LOAD_TEST_VARGS_ERROR_LOAD_WRONG_ARGUMENT_1;
+
+      if (ptr[idx]!=VAS_END_SIGNATURE)
+         return LOAD_TEST_VARGS_ERROR_LOAD_WRONG_ARGUMENT_2;
+   } else {
+      idx=1;
+      goto load_test_vargs_RET1;
+   }
+
+   if (ptr[1]==VAS_END_SIGNATURE)
+      return LOAD_TEST_VARGS_END_SIGNATURE;
+   else if (!ptr[0])
+      return LOAD_TEST_VARGS_ERROR_IS_NULL;
+   else if (c_test_is_header_invalid(ptr[0]))
+      return LOAD_TEST_VARGS_ERROR_HEADER_INVALID;
+
+   *vargs=(C_TEST_VARGS_MSG_HEADER *)ptr[0];
+   return 0;
+}
 
 //
 #define PRINT_CALLBACK \
@@ -1174,4 +1365,84 @@ void assert_not_null(
 {
    assert_nullable(result, &C_TEST_FN_DESCRIPTION_ASSERT_NOT_NULL, free_on_error_cb, free_on_error_ctx, on_error_msg, on_success);
 }
+
+uint64_t *get_va_end_signature()
+{
+   static uint64_t va_end_signature_u64=0x00000000df3f6198;
+   return &va_end_signature_u64;
+}
+
+uint64_t *get_vas_end_signature()
+{
+   static uint64_t vas_end_signature_u64=0x0000000167abdd72;
+   return &vas_end_signature_u64;
+}
+
+#ifdef DEBUG_TEST
+ inline int load_test_vargs_for_test(void **vargs, ...)
+ {
+    void *ctx;
+    va_list va;
+    va_start(va, vargs);
+    ctx=(void *)va_arg(va, void *);
+    va_end(va);
+
+    return load_test_vargs(vargs, ctx, NULL, VAS_END_SIGNATURE);
+ }
+
+ inline int free_vargs_for_test(void *vargs)
+ {
+    return free_vargs(vargs);
+ }
+
+ static char *ctest_setter_has_util(void *ctest_setter, uint32_t sig)
+ {
+    C_TEST_VARGS_MSG *res;
+
+    if (!ctest_setter)
+       return NULL;
+
+    if ((res=check_vargs_sigmsg_exists(((C_TEST_VARGS_MSG_HEADER *)ctest_setter)->vargs_msgs, sig)))
+      return res->msg;
+
+    return NULL;
+ }
+
+ inline char *ctest_setter_has_title(void *ctest_setter)
+ {
+    return ctest_setter_has_util(ctest_setter, C_TEST_VARGS_TITLE);
+ }
+
+ inline char *ctest_setter_has_info(void *ctest_setter)
+ {
+    return ctest_setter_has_util(ctest_setter, C_TEST_VARGS_INFO);
+ }
+
+ inline char *ctest_setter_has_warn(void *ctest_setter)
+ {
+    return ctest_setter_has_util(ctest_setter, C_TEST_VARGS_WARNING);
+ }
+
+ inline char *ctest_setter_has_onerror(void *ctest_setter)
+ {
+    return ctest_setter_has_util(ctest_setter, C_TEST_VARGS_ERROR);
+ }
+
+ inline char *ctest_setter_has_onsuccess(void *ctest_setter)
+ {
+    return ctest_setter_has_util(ctest_setter, C_TEST_VARGS_SUCCESS);
+ }
+
+ void show_message_text()
+ {
+    const char *msg="This is a simple %s message";
+
+     TITLE_MSG_FMT(msg, "TITLE")
+     ERROR_MSG_FMT(msg, "ERROR")
+     SUCCESS_MSG_FMT(msg, "SUCCESS")
+     WARN_MSG_FMT(msg, "WARNING")
+     INFO_MSG_FMT(msg, "INFO")
+ }
+
+#endif
 
