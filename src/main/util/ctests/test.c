@@ -17,6 +17,8 @@ void abort_fn(void *ctx)
    }
 }
 
+#define EXPECTED_DEFAULT_MESSAGE "Welcome. This is a JNI example. I hope you enjoy this tutorial"
+#define TESTING_FUNCTION_MSG_TITLE "Testing \"%s()\" function ..."
 int main(int argc, char **argv)
 {
    int err;
@@ -26,92 +28,173 @@ int main(int argc, char **argv)
 
    on_abort(abort_fn);
 
-   assert_equal_string(
-      "Welcome. This is a JNI example. I hope you enjoy this tutorial",
-       welcome(),
-       "welcome() desire welcome message is wrong",
-       "Testing welcome() message is correct ok"
+   C_ASSERT_EQUAL_STRING(
+      EXPECTED_DEFAULT_MESSAGE,
+      welcome(),
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "welcome"),
+         CTEST_ON_SUCCESS("Testing welcome() message is correct ok"),
+         CTEST_ON_ERROR("welcome() desire welcome message is wrong")
+      )
    );
 
-   assert_equal_double(2.3, add_two_numbers(1.0, 1.3), delta, "Error: Adding two numbers", "Adding two numbers ok");
+   C_ASSERT_EQUAL_DOUBLE(
+      2.3,
+      add_two_numbers(1.0, 1.3),
+      delta,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "add_two_numbers"),
+         CTEST_ON_SUCCESS("Adding two numbers ok"),
+         CTEST_ON_ERROR("Error: Adding two numbers")
+      )
+   );
 
-   assert_equal_double(2., sub_two_numbers(2.3, 0.3), delta, "Error: Subtract two numbers", "Subtract two numbers ok");
+   C_ASSERT_EQUAL_DOUBLE(
+      2.,
+      sub_two_numbers(2.3, 0.3),
+      delta,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "sub_two_numbers"),
+         CTEST_ON_SUCCESS("Subtract two numbers ok"),
+         CTEST_ON_ERROR("Error: Subtract two numbers")
+      )
+   );
 
-   assert_equal_double(2.2, mult_two_numbers(1.1, 2.0), delta, "Error: Multiply two numbers", "Multiply two numbers ok");
+   C_ASSERT_EQUAL_DOUBLE(
+      2.2,
+      mult_two_numbers(1.1, 2.0),
+      delta,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "mult_two_numbers"),
+         CTEST_ON_SUCCESS("Multiply two numbers ok"),
+         CTEST_ON_ERROR("Error: Multiply two numbers")
+      )
+   );
 
    a=8.4;
    division_result=div_two_numbers(&a, 2);
 
-   assert_not_null(division_result, NULL, NULL, "\"division_result\" is NULL", "\"division_result\" ok");
+   C_ASSERT_NOT_NULL(
+      division_result,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "div_two_numbers"),
+         CTEST_ON_SUCCESS("\"division_result\" ok"),
+         CTEST_ON_ERROR("\"division_result\" is NULL")
+      )
+   );
 
-   assert_equal_double(4.2, *division_result, delta, "Error: Divide two numbers", "Divide two numbers ok");
+   C_ASSERT_EQUAL_DOUBLE(
+      4.2,
+      *division_result,
+      delta,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "div_two_numbers"),
+         CTEST_ON_SUCCESS("Divide two numbers ok"),
+         CTEST_ON_ERROR("Error: Divide two numbers")
+      )
+   );
 
    a=10.;
    division_result=div_two_numbers(&a, 0);
 
-   assert_null(division_result, NULL, NULL, "\"division_result\" is NOT NULL", "\"division_result\" == NULL -> ok");
+   C_ASSERT_NULL(
+      division_result,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "div_two_numbers"),
+         CTEST_ON_SUCCESS("\"division_result\" == NULL -> ok"),
+         CTEST_ON_ERROR("\"division_result\" is NOT NULL")
+      )
+   );
 
-   assert_null(
+   C_ASSERT_NULL(
       (void *)random_longint(&random1),
-      NULL,
-      NULL,
-      "\"random_longint()\" error. Expected NULL",
-      "Parsing system random long int value to \"random1\" -> ok"
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "random_longint"),
+         CTEST_ON_SUCCESS("Parsing system random long int value to \"random1\" -> ok"),
+         CTEST_ON_ERROR("\"random_longint()\" error. Expected NULL")
+      )
    );
 
-   assert_null(
+   C_ASSERT_NULL(
       (void *)random_longint(&random2),
-      NULL,
-      NULL,
-      "\"random_longint()\" error. Expected NULL 2",
-      "Parsing system random long int value to \"random2\" -> ok"
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "random_longint"),
+         CTEST_ON_SUCCESS("Parsing system random long int value to \"random2\" -> ok"),
+         CTEST_ON_ERROR("\"random_longint()\" error. Expected NULL")
+      )
    );
 
-   assert_not_equal_longint(
-      (long long int)random1,
-      (long long int)random2,
-      "Fatal. System random may not working",
-      "\"random1\" and \"random2\" are different -> ok"
+   C_ASSERT_NOT_EQUAL_LONG_INT(
+      random1,
+      random2,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "random_longint"),
+         CTEST_ON_SUCCESS("\"random1\" and \"random2\" are different -> ok"),
+         CTEST_ON_ERROR("Fatal. System random may not working")
+      )
    );
 
-   assert_null(
+   C_ASSERT_NULL(
       (void *)gen_rand_no_entropy_util(rnd1, sizeof(rnd1)),
-      NULL,
-      NULL,
-      "\"gen_rand_no_entropy_util()\" error. Expected NULL",
-      "Parsing system random value to \"rnd1\" -> ok"
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "gen_rand_no_entropy_util"),
+         CTEST_ON_SUCCESS("Parsing system random value to \"rnd1\" -> ok"),
+         CTEST_ON_ERROR("\"gen_rand_no_entropy_util()\" error. Expected NULL")
+      )
    );
 
-   assert_null(
+   C_ASSERT_NULL(
       (void *)gen_rand_no_entropy_util(rnd2, sizeof(rnd2)),
-      NULL,
-      NULL,
-      "\"gen_rand_no_entropy_util()\" error. Expected NULL 2",
-      "Parsing system random value to \"rnd2\" -> ok"
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "gen_rand_no_entropy_util"),
+         CTEST_ON_SUCCESS("Parsing system random value to \"rnd2\" -> ok"),
+         CTEST_ON_ERROR("\"gen_rand_no_entropy_util()\" error. Expected NULL")
+      )
    );
 
-   assert_not_equal_byte(
+  C_ASSERT_NOT_EQUAL_BYTE(
       (void *)rnd1,
       (void *)rnd2,
       sizeof(rnd1),
-      NULL,
-      NULL,
-      "\"rnd1\" is equal to \"rnd2\".",
-      "\"rnd1\" and \"rnd2\" are different -> ok"
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "gen_rand_no_entropy_util"),
+         CTEST_ON_SUCCESS("\"rnd1\" and \"rnd2\" are different -> ok"),
+         CTEST_ON_ERROR("\"rnd1\" is equal to \"rnd2\".")
+      )
    );
 
-   assert_false((err=hello_guest_dynamic(&msg, "GUEST"))<0, "hello_guest_dynamic() returned an error (negative value)", "hello_guest_dynamic() passed");
+   err=hello_guest_dynamic(&msg, "GUEST");
 
-   assert_not_null(msg, NULL, NULL, "\"msg\" returned NULL. It should be NON NULL.", "\"msg\" is NOT NULL (OK)");
+   C_ASSERT_FALSE(
+      err<0,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "hello_guest_dynamic"),
+         CTEST_ON_SUCCESS("hello_guest_dynamic() passed with allocated pointer (%p) with size %d", msg, err+1),
+         CTEST_ON_ERROR("hello_guest_dynamic() returned an error (negative value)")
+      )
+   );
 
-   assert_equal_string(
+   C_ASSERT_NOT_NULL(
+      msg,
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "hello_guest_dynamic"),
+         CTEST_ON_SUCCESS("\"msg\" is NOT NULL (%p)", msg),
+         CTEST_ON_ERROR("\"msg\" returned NULL It should be NON NULL.")
+      )
+   );
+
+   C_ASSERT_EQUAL_STRING(
       EXPECTED_HELLO_GUEST_MESSAGE,
       msg,
-      "\"msg\" string contains wrong string expected in \"hello_guest_dynamic()\".",
-      "\"hello_guest_dynamic()\" returned string \""EXPECTED_HELLO_GUEST_MESSAGE"\""
+      CTEST_SETTER(
+         CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "hello_guest_dynamic"),
+         CTEST_ON_SUCCESS("\"hello_guest_dynamic()\" returned string \"%s\" at (%p)", EXPECTED_HELLO_GUEST_MESSAGE, msg),
+         CTEST_ON_ERROR("\"msg\" string contains wrong string expected in \"hello_guest_dynamic()\". msg = %s", msg)
+      )
    );
 
    free(msg);
+   end_tests();
    return 0;
 }
 
