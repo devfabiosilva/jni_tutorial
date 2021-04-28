@@ -36,7 +36,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Testing welcome() message is correct ok"),
          CTEST_ON_ERROR("welcome() desire welcome message is wrong")
       )
-   );
+   )
 
    C_ASSERT_EQUAL_DOUBLE(
       2.3,
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Adding two numbers ok"),
          CTEST_ON_ERROR("Error: Adding two numbers")
       )
-   );
+   )
 
    C_ASSERT_EQUAL_DOUBLE(
       2.,
@@ -58,7 +58,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Subtract two numbers ok"),
          CTEST_ON_ERROR("Error: Subtract two numbers")
       )
-   );
+   )
 
    C_ASSERT_EQUAL_DOUBLE(
       2.2,
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Multiply two numbers ok"),
          CTEST_ON_ERROR("Error: Multiply two numbers")
       )
-   );
+   )
 
    a=8.4;
    division_result=div_two_numbers(&a, 2);
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("\"division_result\" ok"),
          CTEST_ON_ERROR("\"division_result\" is NULL")
       )
-   );
+   )
 
    C_ASSERT_EQUAL_DOUBLE(
       4.2,
@@ -92,7 +92,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Divide two numbers ok"),
          CTEST_ON_ERROR("Error: Divide two numbers")
       )
-   );
+   )
 
    a=10.;
    division_result=div_two_numbers(&a, 0);
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("\"division_result\" == NULL -> ok"),
          CTEST_ON_ERROR("\"division_result\" is NOT NULL")
       )
-   );
+   )
 
    C_ASSERT_NULL(
       (void *)random_longint(&random1),
@@ -113,7 +113,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Parsing system random long int value to \"random1\" -> ok"),
          CTEST_ON_ERROR("\"random_longint()\" error. Expected NULL")
       )
-   );
+   )
 
    C_ASSERT_NULL(
       (void *)random_longint(&random2),
@@ -122,7 +122,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Parsing system random long int value to \"random2\" -> ok"),
          CTEST_ON_ERROR("\"random_longint()\" error. Expected NULL")
       )
-   );
+   )
 
    C_ASSERT_NOT_EQUAL_LONG_INT(
       random1,
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("\"random1\" and \"random2\" are different -> ok"),
          CTEST_ON_ERROR("Fatal. System random may not working")
       )
-   );
+   )
 
    C_ASSERT_NULL(
       (void *)gen_rand_no_entropy_util(rnd1, sizeof(rnd1)),
@@ -141,7 +141,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Parsing system random value to \"rnd1\" -> ok"),
          CTEST_ON_ERROR("\"gen_rand_no_entropy_util()\" error. Expected NULL")
       )
-   );
+   )
 
    C_ASSERT_NULL(
       (void *)gen_rand_no_entropy_util(rnd2, sizeof(rnd2)),
@@ -150,7 +150,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("Parsing system random value to \"rnd2\" -> ok"),
          CTEST_ON_ERROR("\"gen_rand_no_entropy_util()\" error. Expected NULL")
       )
-   );
+   )
 
   C_ASSERT_NOT_EQUAL_BYTE(
       (void *)rnd1,
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("\"rnd1\" and \"rnd2\" are different -> ok"),
          CTEST_ON_ERROR("\"rnd1\" is equal to \"rnd2\".")
       )
-   );
+   )
 
    err=hello_guest_dynamic(&msg, "GUEST");
 
@@ -172,7 +172,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("hello_guest_dynamic() passed with allocated pointer (%p) with size %d", msg, err+1),
          CTEST_ON_ERROR("hello_guest_dynamic() returned an error (negative value)")
       )
-   );
+   )
 
    C_ASSERT_NOT_NULL(
       msg,
@@ -181,7 +181,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("\"msg\" is NOT NULL (%p)", msg),
          CTEST_ON_ERROR("\"msg\" returned NULL It should be NON NULL.")
       )
-   );
+   )
 
    C_ASSERT_EQUAL_STRING(
       EXPECTED_HELLO_GUEST_MESSAGE,
@@ -191,7 +191,7 @@ int main(int argc, char **argv)
          CTEST_ON_SUCCESS("\"hello_guest_dynamic()\" returned string \"%s\" at (%p)", EXPECTED_HELLO_GUEST_MESSAGE, msg),
          CTEST_ON_ERROR("\"msg\" string contains wrong string expected in \"hello_guest_dynamic()\". msg = %s", msg)
       )
-   );
+   )
 
    free(msg);
    end_tests();
