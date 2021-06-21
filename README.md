@@ -25,3 +25,34 @@ To create a native library in your OS system you need:
 - _Run this example_ in your JVM
 
 TODO ...
+
+## Compiling libraries
+
+- Just type
+
+```sh
+cd <YOUR_PROJECT>/src/main/util && make
+```
+
+- To test your library
+
+```sh
+cd <YOUR_PROJECT>/src/main/util && make test
+```
+
+### Cleaning compiled library
+
+Just type in your _src/main/util_ folder:
+
+```sh
+make clean
+```
+
+## Contact
+
+mailto: fabioegel@gmail.com
+
+## License
+
+MIT
+
