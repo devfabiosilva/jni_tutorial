@@ -48,6 +48,10 @@ Just type in your _src/main/util_ folder:
 make clean
 ```
 
+## JNI and C library documentation
+
+Sample example functions and used JNI functions are documented [here](https://devfabiosilva.github.io/jni_tutorial/)
+
 ## Contact
 
 mailto: fabioegel@gmail.com
