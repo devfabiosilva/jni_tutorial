@@ -122,25 +122,13 @@ class MainTest {
     }
 
     @Test
-    void divTwoNumbersExceptionTest() throws Throwable {
+    void divTwoNumbersExceptionTest() {
         double A = 10.0;
         double B = 0.0;
-        Double result = null;
-        try {
-            result = divTwoNumbers(A, B);
-            Assertions.fail("Divide by zero is inconsistent. Should return an error");
-        } catch (Throwable e) {
-            if (e instanceof AssertionError)
-                throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
-            Assertions.assertEquals(300, ((JniExampleException) e).getError());
-            Assertions.assertEquals(
-                    "divTwoNumbers: Can not divide by ZERO!",
-                    e.getMessage());
-            exceptionSuccess(((JniExampleException) e).getError(), e.getMessage());
-        }
-        Assertions.assertNull(result);
+        Assertions.assertEquals(Double.POSITIVE_INFINITY, divTwoNumbers(A, B));
+        Assertions.assertEquals(Double.NEGATIVE_INFINITY, divTwoNumbers(-A, B));
+        Assertions.assertEquals(Double.NaN, divTwoNumbers(B, B));
     }
 
     @Test

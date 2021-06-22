@@ -1,5 +1,6 @@
 #include <jni_example_utils.h>
 #include <foreign_library.h>
+#include <math.h>
 
 /*
  * Class:     org_jni_example_Main
@@ -127,9 +128,13 @@ JNIEXPORT jdouble JNICALL Java_org_jni_example_Main_divTwoNumbers(
    if (div_two_numbers(&result, (double)B))
       return (jdouble)result;
 
-   JNI_EXAMPLE_UTIL_EXCEPTION("divTwoNumbers: Can not divide by ZERO!", 300);
+   if (A > 0.0)
+      return INFINITY;
 
-   return 0.0;
+   if (A < 0.0)
+      return -INFINITY;
+
+   return NAN;
 }
 
 /*
