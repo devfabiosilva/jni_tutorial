@@ -124,11 +124,12 @@ int main(int argc, char **argv)
       )
    )
 
-   C_ASSERT_NOT_EQUAL_LONG_INT(
+   C_ASSERT_NOT_EQUAL_UNSIGNED_LONG_INT(
       random1,
       random2,
       CTEST_SETTER(
          CTEST_TITLE(TESTING_FUNCTION_MSG_TITLE, "random_longint"),
+         CTEST_WARN("Checking if \"random1\" and \"random2\" has different values"),
          CTEST_ON_SUCCESS("\"random1\" and \"random2\" are different -> ok"),
          CTEST_ON_ERROR("Fatal. System random may not working")
       )

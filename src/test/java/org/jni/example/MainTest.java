@@ -60,10 +60,9 @@ class MainTest {
             System.out.println(helloGuest(null));
             Assertions.fail("helloGuest error should add an JniExampleException");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(20, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "jni_example_javaUTF8_to_c_char_util @ helloGuest. Error in JNI example library 20. String can not be NULL",
@@ -80,10 +79,9 @@ class MainTest {
             System.out.println(helloGuest(""));
             Assertions.fail("helloGuest should throw an JniExampleException in an empty string");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(100, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "helloGuest: \"message\" is an empty string!",
@@ -115,10 +113,10 @@ class MainTest {
     }
 
     @Test
-    void divTwoNumbersTest() throws Throwable {
+    void divTwoNumbersTest() {
         double A = 10;
         double B = 3;
-        Assertions.assertEquals((double) 10 / 3, divTwoNumbers(A, B), delta);
+        Assertions.assertEquals( 10. / 3., divTwoNumbers(A, B), delta);
     }
 
     @Test
@@ -151,10 +149,9 @@ class MainTest {
             byteArray = javaStringToNativeByte(null);
             Assertions.fail("It should expect a throw JniExampleException");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(20, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "jni_example_javaUTF8_to_c_char_util @ javaStringToNativeByte. Error in JNI example library 20. String can not be NULL",
@@ -168,10 +165,9 @@ class MainTest {
             byteArray = javaStringToNativeByte("");
             Assertions.fail("It should expect an JniExampleException on empty string");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(800, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "javaStringToNativeByte: Message can not be an empty string",
@@ -212,10 +208,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry(null, 20, "Test");
             Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"name\" field is null");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(700, ((JniExampleException) e).getError());
             Assertions.assertEquals("createNewExampleRegistry: \"name\" field can not be null", e.getMessage());
         }
@@ -226,10 +221,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry("", 20, "Test");
             Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"name\" field is empty");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(701, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "createNewExampleRegistry: \"name\" field can not be an empty string",
@@ -246,10 +240,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry("Alice", null, "Test");
             Assertions.fail("\"createNewExampleRegistry should throw a JniExampleException when \"age\" field is null\"");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(702, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "createNewExampleRegistry: \"age\" field can not be null",
@@ -266,10 +259,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry("Alice", 20, null);
             Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"occupation\" field is null");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(703, ((JniExampleException) e).getError());
             Assertions.assertEquals("createNewExampleRegistry: \"occupation\" field can not be null", e.getMessage());
         }
@@ -280,10 +272,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry("Alice", 20, "");
             Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"occupation\" field is empty");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(704, ((JniExampleException) e).getError());
             Assertions.assertEquals(
                     "createNewExampleRegistry: \"occupation\" field can not be an empty string",
@@ -303,10 +294,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry(name, -20, occupation);
             Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"age\" has negative value");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(705, ((JniExampleException) e).getError());
             Assertions.assertEquals("createNewExampleRegistry: \"age\" cannot have negative value", e.getMessage());
         }
@@ -315,10 +305,9 @@ class MainTest {
             jniExampleRegistry = createNewExampleRegistry(name, 10, occupation);
             Assertions.fail("createNewExampleRegistry should throw a JniExampleException when \"age\" is less than 18");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(706, ((JniExampleException) e).getError());
             Assertions.assertEquals("createNewExampleRegistry: Candidate with \"age\" = must be 18+", e.getMessage());
         }
@@ -341,10 +330,9 @@ class MainTest {
             rand = nativeRandomNumberGeneratorNoEntropy(0);
             Assertions.fail("Should fail. Can't generate random number with 0 size");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(901, ((JniExampleException)e).getError());
             Assertions.assertEquals("nativeRandomNumberGeneratorNoEntropy: Size cannot be zero 901", e.getMessage());
         }
@@ -355,10 +343,9 @@ class MainTest {
             rand = nativeRandomNumberGeneratorNoEntropy(-1);
             Assertions.fail("Should fail. Can't generate random number with negative size");
         } catch (Throwable e) {
-            if (e instanceof AssertionError)
+            if (!(e instanceof JniExampleException))
                 throw e;
 
-            Assertions.assertTrue(e instanceof JniExampleException);
             Assertions.assertEquals(900, ((JniExampleException)e).getError());
             Assertions.assertEquals("nativeRandomNumberGeneratorNoEntropy: Size value cannot be negative 900", e.getMessage());
         }
